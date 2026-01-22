@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hiteshi Kavaria | Portfolio</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/Users/hiteshikawadia/Documents/INFO6150-Assingments/Assignment-2/Asset/favicon.png" />
+
+  <!-- External CSS only -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="site-header" id="home">
+    <div class="container header-inner">
+      <div class="logo">
+        <span class="dot"></span>
+        <span class="logo-text">HK</span>
+      </div>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#works">Works</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h1 class="hero-name">
+          <span>H I T E S H I</span>
+          <span>K A V A R I A</span>
+        </h1>
+
+        <p class="hero-sub">
+          Open to opportunities. Passionate about building polished, intuitive, and thoughtful digital experiences.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn" href="#contact">CONTACT ↗</a>
+          <a class="btn btn-ghost" href="#works">VIEW WORKS</a>
+        </div>
+
+        <div class="hero-meta">
+          <div class="badge">Available for work</div>
+          <div class="meta-line">
+            <span>Boston, MA</span>
+            <span>•</span>
+            <span id="localTime">Local time: --:--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ASIDE (semantic) -->
+      <aside class="hero-right" aria-label="Quick profile">
+        <div class="card">
+          <div class="card-title">Quick Facts</div>
+          <ul class="list">
+            <li><strong>Program:</strong> MSIS @ Northeastern</li>
+            <li><strong>Core:</strong> .NET • SQL • Python</li>
+            <li><strong>Focus:</strong> Backend + ERP Systems</li>
+            <li><strong>LinkedIn:</strong> hiteshikawadia27</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Core Stack</div>
+          <div class="pills">
+            <span class="pill">C#</span>
+            <span class="pill">.NET</span>
+            <span class="pill">SQL</span>
+            <span class="pill">Python</span>
+            <span class="pill">Git</span>
+            <span class="pill">HTML</span>
+            <span class="pill">CSS</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section" id="services">
+      <div class="section-head">
+        <div class="kicker">W h a t&nbsp; I &nbsp;D o&nbsp; /</div>
+        <div class="subkicker">(Services)</div>
+      </div>
+
+      <p class="lead">
+        I build fast, reliable, user-friendly web and enterprise solutions — from UI to APIs to databases.
+      </p>
+
+      <div class="services">
+        <article class="service">
+          <div class="service-no">(01)</div>
+          <h3>Full-Stack Development</h3>
+          <p>
+            End-to-end features: frontend interactions, backend APIs, and production-ready workflows.
+          </p>
+          <div class="service-tags">
+            <span>React</span><span>.NET</span><span>REST APIs</span><span>Git</span>
+          </div>
+        </article>
+
+        <article class="service">
+          <div class="service-no">(02)</div>
+          <h3>UI/UX & Frontend</h3>
+          <p>
+            Clean responsive interfaces that feel intuitive across devices, with polished interactions.
+          </p>
+          <div class="service-tags">
+            <span>HTML</span><span>CSS</span><span>Responsive</span><span>Accessibility</span>
+          </div>
+        </article>
+
+        <article class="service">
+          <div class="service-no">(03)</div>
+          <h3>Data & Optimization</h3>
+          <p>
+            Database design, query tuning, and structured pipelines that improve speed and reliability.
+          </p>
+          <div class="service-tags">
+            <span>SQL</span><span>Indexes</span><span>ETL</span><span>Performance</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- WORKS -->
+    <section class="section" id="works">
+      <div class="section-head">
+        <div class="kicker">S E L E C T E D&nbsp; W O R K S&nbsp; /</div>
+        <div class="subkicker">(Projects)</div>
+      </div>
+
+      <div class="works">
+        <article class="work">
+          <div class="work-left">
+            <h3>Pocketify</h3>
+            <p class="muted">Finance control & expense tracking app</p>
+          </div>
+          <div class="work-right">
+            <span class="chip">SQL</span><span class="chip">Backend</span><span class="chip">UI</span>
+            <button class="btn btn-small" type="button">Open</button>
+          </div>
+        </article>
+
+        <article class="work">
+          <div class="work-left">
+            <h3>Blood Donation Website</h3>
+            <p class="muted">Donor registration + search + request form</p>
+          </div>
+          <div class="work-right">
+            <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">Forms</span>
+            <button class="btn btn-small" type="button">Open</button>
+          </div>
+        </article>
+
+        <article class="work">
+          <div class="work-left">
+            <h3>Trend Intelligence Prototype</h3>
+            <p class="muted">Emerging tech signals + scoring concept</p>
+          </div>
+          <div class="work-right">
+            <span class="chip">Python</span><span class="chip">Data</span><span class="chip">Systems</span>
+            <button class="btn btn-small" type="button">Open</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- TABLE (Requirement) -->
+    <section class="section" id="highlights">
+      <div class="section-head">
+        <div class="kicker">H I G H L I G H T S&nbsp; /</div>
+        <div class="subkicker">(Table + CSS selectors)</div>
+      </div>
+
+      <div class="card">
+        <table class="data-table">
+          <caption>Skills & Where I Used Them</caption>
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Used In</th>
+              <th>Strength</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>.NET / C#</td>
+              <td>ERP customizations, business logic</td>
+              <td>Advanced</td>
+            </tr>
+            <tr>
+              <td>SQL</td>
+              <td>Optimization, reporting, schema design</td>
+              <td>Advanced</td>
+            </tr>
+            <tr>
+              <td>Python</td>
+              <td>Data processing, automation prototypes</td>
+              <td>Intermediate</td>
+            </tr>
+            <tr>
+              <td>HTML/CSS</td>
+              <td>Responsive portfolio UI components</td>
+              <td>Intermediate</td>
+            </tr>
+            <tr>
+              <td>Git</td>
+              <td>Incremental commits & version control</td>
+              <td>Strong</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- GALLERY (Requirement) -->
+    <section class="section" id="gallery">
+      <div class="section-head">
+        <div class="kicker">G A L L E R Y&nbsp; /</div>
+        <div class="subkicker">(Image Gallery)</div>
+      </div>
+
+      <div class="gallery">
+        <figure class="gallery-item">
+          <img src="/Users/hiteshikawadia/Documents/INFO6150-Assingments/Assignment-2/Asset/gallery-1.jpg" alt="Gallery image 1" />
+          <figcaption>ERP Screen Customization</figcaption>
+        </figure>
+
+        <figure class="gallery-item">
+          <img src="/Users/hiteshikawadia/Documents/INFO6150-Assingments/Assignment-2/Asset/gallery-2.jpg" alt="Gallery image 2" />
+          <figcaption>SQL / Reporting Work</figcaption>
+        </figure>
+
+        <figure class="gallery-item">
+          <img src="/Users/hiteshikawadia/Documents/INFO6150-Assingments/Assignment-2/Asset/gallery-3.jpg" alt="Gallery image 3" />
+          <figcaption>Web UI Component</figcaption>
+        </figure>
+
+        <figure class="gallery-item">
+          <img src="/Users/hiteshikawadia/Documents/INFO6150-Assingments/Assignment-2/Asset/gallery-4.jpg" alt="Gallery image 4" />
+          <figcaption>Prototype / Data Pipeline</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS (Requirement) -->
+    <section class="section" id="testimonials">
+      <div class="section-head">
+        <div class="kicker">T E S T I M O N I A L S&nbsp; /</div>
+        <div class="subkicker">(Testimonials)</div>
+      </div>
+
+      <div class="testimonials">
+        <article class="testimonial">
+          <p>“Hiteshi consistently delivers high-quality and reliable solutions.”</p>
+          <strong>— Team Lead</strong>
+        </article>
+
+        <article class="testimonial">
+          <p>“Strong understanding of backend systems and databases.”</p>
+          <strong>— Senior Engineer</strong>
+        </article>
+
+        <article class="testimonial">
+          <p>“Professional, detail-oriented, and great to work with.”</p>
+          <strong>— Project Mentor</strong>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="section-head">
+        <div class="kicker">A B O U T&nbsp; M E&nbsp; /</div>
+        <div class="subkicker">(Story)</div>
+      </div>
+
+      <div class="card">
+        <p>
+          I’m a software engineer who enjoys turning ideas into clean, intuitive digital experiences.
+          My background includes ERP customization with .NET/BQL, performance tuning in SQL, and building
+          practical web projects with responsive UI.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTACT (Form requirement) -->
+    <section class="section" id="contact">
+      <div class="section-head">
+        <div class="kicker">S A Y&nbsp; H E L L O&nbsp; /</div>
+        <div class="subkicker">(Contact)</div>
+      </div>
+
+      <form class="card contact-form" action="#" method="post">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" required />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="field">
+          <label for="topic">Topic</label>
+          <select id="topic" name="topic">
+            <option value="opportunity">Opportunity</option>
+            <option value="collab">Collaboration</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Write your message..." required></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="submit">Send Message</button>
+          <button class="btn btn-ghost" type="reset">Reset</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-col">
+        <div class="footer-title">Menu</div>
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#works">Works</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-title">Socials</div>
+        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        <a href="#" aria-label="GitHub">GitHub</a>
+        <a href="#" aria-label="Instagram">Instagram</a>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-title">Local time</div>
+        <div class="muted" id="localTimeFooter">Loading...</div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© 2026 Hiteshi Kavaria</span>
+      <a class="top" href="#home">Scroll to top ↑</a>
+    </div>
+  </footer>
+
+  <!-- tiny JS only for local time (allowed; CSS remains external) -->
+  <script>
+    function setLocalTime() {
+      const now = new Date();
+      const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const a = document.getElementById("localTime");
+      const b = document.getElementById("localTimeFooter");
+      if (a) a.textContent = "Local time: " + time;
+      if (b) b.textContent = time;
+    }
+    setLocalTime();
+    setInterval(setLocalTime, 60000);
+  </script>
+</body>
+</html>
