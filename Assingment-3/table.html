@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assignment 3 - Student Awards</title>
+
+  <link rel="stylesheet" href="table.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Requirement 1: Full Name + NUID on page load -->
+  <header class="pageHeader">
+    <h1>Assignment 3</h1>
+    <p class="studentMeta">
+      <strong>Name:</strong> Hiteshi Kawadia |
+      <strong>NUID:</strong> 002067922
+    </p>
+  </header>
+
+  <main>
+    <table id="myTable">
+      <caption class="srOnly">Student Awards Table</caption>
+
+      <!-- Requirement 3: thead + tbody -->
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">STUDENT</th>
+          <th scope="col">ADVISOR</th>
+          <th scope="col">AWARD<br/>STATUS</th>
+          <th scope="col">SEMESTER</th>
+          <th scope="col">TYPE</th>
+          <th scope="col">BUDGET<br/>#</th>
+          <th scope="col">PERCENTAGE</th>
+          <th scope="col">DELETE</th>
+          <th scope="col">EDIT</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- Student 1 -->
+        <tr class="dataRow" data-student="1">
+          <td class="controlsCell">
+            <input type="checkbox" class="rowCheck" />
+            <br/><br/>
+            <!-- Requirement 11: arrow toggles expand/collapse -->
+            <img src="down.png" class="arrowIcon" alt="Toggle details" width="25" />
+          </td>
+          <td class="studentName">Student 1</td>
+          <td>Teacher 1</td>
+          <td>Approved</td>
+          <td>Fall</td>
+          <td>TA</td>
+          <td>12345</td>
+          <td>100%</td>
+          <td class="deleteCell"></td>
+          <td class="editCell"></td>
+        </tr>
+        <tr class="dropDownTextArea" data-details-for="1">
+          <td colspan="10">
+            <strong>Student 1 Details:</strong><br/>
+            Award Details: Honors Student<br/>
+            Fall 1-2024 (TA)<br/>
+            Comments: Outstanding<br/>
+            Award Status: A
+          </td>
+        </tr>
+
+        <!-- Student 2 -->
+        <tr class="dataRow" data-student="2">
+          <td class="controlsCell">
+            <input type="checkbox" class="rowCheck" />
+            <br/><br/>
+            <img src="down.png" class="arrowIcon" alt="Toggle details" width="25" />
+          </td>
+          <td class="studentName">Student 2</td>
+          <td>Teacher 2</td>
+          <td>Approved</td>
+          <td>Fall</td>
+          <td>TA</td>
+          <td>23456</td>
+          <td>100%</td>
+          <td class="deleteCell"></td>
+          <td class="editCell"></td>
+        </tr>
+        <tr class="dropDownTextArea" data-details-for="2">
+          <td colspan="10">
+            <strong>Student 2 Details:</strong><br/>
+            Award Details: Honors Student<br/>
+            Fall 1-2024 (TA)<br/>
+            Comments: Outstanding<br/>
+            Award Status: A
+          </td>
+        </tr>
+
+        <!-- Student 3 -->
+        <tr class="dataRow" data-student="3">
+          <td class="controlsCell">
+            <input type="checkbox" class="rowCheck" />
+            <br/><br/>
+            <img src="down.png" class="arrowIcon" alt="Toggle details" width="25" />
+          </td>
+          <td class="studentName">Student 3</td>
+          <td>Teacher 3</td>
+          <td>Approved</td>
+          <td>Fall</td>
+          <td>TA</td>
+          <td>34567</td>
+          <td>100%</td>
+          <td class="deleteCell"></td>
+          <td class="editCell"></td>
+        </tr>
+        <tr class="dropDownTextArea" data-details-for="3">
+          <td colspan="10">
+            <strong>Student 3 Details:</strong><br/>
+            Award Details: Honors Student<br/>
+            Fall 1-2024 (TA)<br/>
+            Comments: Outstanding<br/>
+            Award Status: A
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="actionsBar">
+      <!-- Requirement 2b: disabled + gray on load (JS will set disabled) -->
+      <button id="button" class="submitBtn" disabled>SUBMIT SELECTED AWARDS</button>
+      <button id="add" class="addBtn">Add New Student</button>
+    </div>
+  </main>
+
+  <!-- Edit Modal (Requirement 9: title + textbox + OK + Cancel) -->
+  <div id="editModal" class="modalOverlay hidden" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h2 id="editTitle">Edit details</h2>
+      <input id="editInput" type="text" placeholder="Enter new details..." />
+      <div class="modalBtns">
+        <button id="editOk" class="okBtn">OK</button>
+        <button id="editCancel" class="cancelBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="socialmediaicons"></nav>
+  <script src="script.js"></script>
+</body>
+</html>

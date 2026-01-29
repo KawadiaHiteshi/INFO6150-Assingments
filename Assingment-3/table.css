@@ -1,0 +1,122 @@
+/* Table layout */
+#myTable input { margin-left: 5px; }
+
+#myTable {
+  border: 2px solid green;
+  border-collapse: collapse;
+  margin: 20px 30px 10px 40px;
+  width: calc(100% - 70px);
+  max-width: 1100px;
+}
+
+#myTable td, #myTable th {
+  border: 1px solid green;
+  padding: 8px;
+  vertical-align: top;
+}
+
+#myTable th {
+  color: #fff;
+  background-color: #a7c942;
+  text-align: left;
+}
+
+.controlsCell { width: 60px; }
+.arrowIcon { cursor: pointer; }
+
+/* Requirement 2a: collapsed on page load */
+.dropDownTextArea {
+  display: none;
+  background: #f7fff0;
+}
+
+/* Requirement 7a: selected row yellow */
+.dataRow.selected {
+  background: yellow;
+}
+
+/* Buttons */
+.actionsBar{
+  margin: 15px 0 0 40px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.submitBtn{
+  color: #fff;
+  border-radius: 3px;
+  border: 2px solid #999;
+  padding: 8px 12px;
+}
+
+/* Requirement 2b: submit disabled + gray */
+.submitBtn:disabled{
+  background: #bdbdbd;
+  border-color: #bdbdbd;
+  cursor: not-allowed;
+}
+
+/* Requirement 7b: submit turns orange when any selected */
+.submitBtn.enabled{
+  background: orange;
+  border-color: orange;
+  cursor: pointer;
+}
+
+.addBtn{
+  padding: 8px 12px;
+  border-radius: 3px;
+  border: 2px solid #333;
+  cursor: pointer;
+}
+
+.rowActionBtn{
+  padding: 4px 8px;
+  border-radius: 3px;
+  border: 1px solid #333;
+  cursor: pointer;
+}
+
+/* Small helper for caption accessibility */
+.srOnly{
+  position: absolute;
+  left: -9999px;
+}
+
+/* Modal */
+.modalOverlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.hidden{ display: none; }
+
+.modal{
+  background: #fff;
+  width: min(420px, 95vw);
+  padding: 16px;
+  border-radius: 10px;
+}
+.modal input{
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.modalBtns{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.okBtn, .cancelBtn{
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  cursor: pointer;
+}
