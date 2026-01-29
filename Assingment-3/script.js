@@ -1,8 +1,7 @@
-// Assignment 3 — Full script.js
-// Works with the table.html/table.css structure I gave you (dataRow + dropDownTextArea, deleteCell/editCell, etc.)
-// Covers: submit disabled on load, expand/collapse, checkbox row yellow, dynamic delete/edit buttons,
-// delete removes both rows + popup, edit modal + ok/cancel, add new student in sequence after resequencing.
-// :contentReference[oaicite:0]{index=0}
+// Assignment 3 — script.js (Stable IDs + Fill Gaps)
+// Behavior: If Student 3 is deleted, Student 4 stays Student 4.
+// Next "Add New Student" will re-create Student 3 and insert it in order.
+// :contentReference[oaicite:1]{index=1}
 
 document.addEventListener("DOMContentLoaded", () => {
   const table = document.getElementById("myTable");
@@ -11,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("button");
   const addBtn = document.getElementById("add");
 
-  // Modal elements (must exist in HTML)
+  // Modal elements (must exist in your HTML)
   const editModal = document.getElementById("editModal");
   const editTitle = document.getElementById("editTitle");
   const editInput = document.getElementById("editInput");
@@ -23,9 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------
   // On load requirements
   // -----------------------------
-  collapseAllDetails();          // table not expanded on load
-  setSubmitEnabled(false);       // submit disabled + gray on load
-  hideAllActionCellsOnLoad();    // delete/edit hidden initially
+  collapseAllDetails();          // Requirement 2a
+  setSubmitEnabled(false);       // Requirement 2b
+  hideAllActionCellsOnLoad();    // buttons hidden until checkbox selected
 
   // -----------------------------
   // Helpers
@@ -36,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setSubmitEnabled(enabled) {
     submitBtn.disabled = !enabled;
-    submitBtn.classList.toggle("enabled", enabled); // .enabled -> orange in CSS
+    submitBtn.classList.toggle("enabled", enabled); // orange class
   }
 
   function anyRowSelected() {
@@ -54,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `.dropDownTextArea[data-details-for="${studentNum}"]`
     );
     if (!detailsRow) return;
+
     detailsRow.style.display =
       detailsRow.style.display === "none" || detailsRow.style.display === ""
         ? "table-row"
@@ -62,6 +62,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getStudentNumFromRow(row) {
     return parseInt(row.getAttribute("data-student"), 10);
+  }
+
+  function getAllExistingStudentNums() {
+    return Array.from(tbody.querySelectorAll(".dataRow"))
+      .map(getStudentNumFromRow)
+      .filter((n) => Number.isFinite(n))
+      .sort((a, b) => a - b);
+  }
+
+  // ✅ Smallest missing positive integer (fill the gap)
+  // Example: existing [1,2,4] => returns 3
+  function getNextStudentNumberFillGap() {
+    const nums = getAllExistingStudentNums();
+    let want = 1;
+    for (const n of nums) {
+      if (n === want) want++;
+      else if (n > want) break;
+    }
+    return want;
+  }
+
+  // Insert new student rows in correct visual order (between 2 and 4, etc.)
+  function insertStudentRowsInOrder(mainRow, detailsRow, newNum) {
+    const dataRows = Array.from(tbody.querySelectorAll(".dataRow"));
+    // Find first row whose student number is greater than newNum
+    const insertBeforeDataRow = dataRows.find((r) => getStudentNumFromRow(r) > newNum);
+
+    if (!insertBeforeDataRow) {
+      // append at end
+      tbody.appendChild(mainRow);
+      tbody.appendChild(detailsRow);
+      return;
+    }
+
+    // We want to insert main row before that dataRow, and details row right after main.
+    tbody.insertBefore(mainRow, insertBeforeDataRow);
+    tbody.insertBefore(detailsRow, insertBeforeDataRow);
   }
 
   function ensureRowButtons(row) {
@@ -75,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
       delBtn.className = "rowActionBtn deleteBtn";
       deleteCell.appendChild(delBtn);
     }
+
     if (!editCell.querySelector("button")) {
       const eBtn = document.createElement("button");
       eBtn.textContent = "Edit";
@@ -102,45 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tbody.querySelectorAll(".dataRow").forEach((row) => setRowActionsVisible(row, false));
   }
 
-  // ✅ IMPORTANT FIX: resequence so table never “skips” numbers after deletes.
-  // After resequence: students become 1..N, and next add becomes N+1.
-  function resequenceTable() {
-    const dataRows = Array.from(tbody.querySelectorAll(".dataRow"));
-
-    dataRows.forEach((row, idx) => {
-      const oldNum = getStudentNumFromRow(row);
-      const newNum = idx + 1;
-
-      // Update main row attribute
-      row.setAttribute("data-student", String(newNum));
-
-      // Update Student name cell text
-      const studentNameCell = row.querySelector(".studentName");
-      if (studentNameCell) studentNameCell.textContent = `Student ${newNum}`;
-
-      // Update Advisor cell: in our HTML it is the 3rd cell (index 2) after controls + student
-      // If you changed column order, adjust this index.
-      if (row.children[2]) row.children[2].textContent = `Teacher ${newNum}`;
-
-      // Update details row linked to oldNum
-      const detailsRow = tbody.querySelector(
-        `.dropDownTextArea[data-details-for="${oldNum}"]`
-      );
-      if (detailsRow) {
-        detailsRow.setAttribute("data-details-for", String(newNum));
-        const strong = detailsRow.querySelector("strong");
-        if (strong) strong.textContent = `Student ${newNum} Details:`;
-
-        // Optional: replace any other mentions of Student X in details text (light touch)
-        // (Keeps content consistent without needing perfect parsing)
-        detailsRow.innerHTML = detailsRow.innerHTML.replaceAll(
-          `Student ${oldNum}`,
-          `Student ${newNum}`
-        );
-      }
-    });
-  }
-
+  // Create main + detail rows for a student number
   function buildStudentRows(n) {
     const main = document.createElement("tr");
     main.className = "dataRow";
@@ -187,16 +187,15 @@ document.addEventListener("DOMContentLoaded", () => {
   tbody.addEventListener("click", (e) => {
     const target = e.target;
 
-    // Expand/collapse
+    // Expand/collapse (Requirement 11)
     if (target.classList.contains("arrowIcon")) {
       const row = target.closest(".dataRow");
       if (!row) return;
-      const num = getStudentNumFromRow(row);
-      toggleDetailsFor(num);
+      toggleDetailsFor(getStudentNumFromRow(row));
       return;
     }
 
-    // Delete
+    // Delete (Requirement 8) — ✅ NO resequencing here
     if (target.classList.contains("deleteBtn")) {
       const row = target.closest(".dataRow");
       if (!row) return;
@@ -207,11 +206,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const detailsRow = tbody.querySelector(
         `.dropDownTextArea[data-details-for="${studentNum}"]`
       );
+
       row.remove();
       if (detailsRow) detailsRow.remove();
-
-      // resequence to keep 1..N (this prevents “skip after 4” issue)
-      resequenceTable();
 
       showPopup(`Student ${studentNum} Record deleted successfully`);
 
@@ -220,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Edit
+    // Edit (Requirement 9)
     if (target.classList.contains("editBtn")) {
       const row = target.closest(".dataRow");
       if (!row) return;
@@ -230,14 +227,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       editTitle.textContent = `Edit details of Student ${studentNum}`;
       editInput.value = "";
-
       openModal();
       return;
     }
   });
 
   // -----------------------------
-  // Checkbox change: select/deselect
+  // Checkbox change: select/deselect (Requirement 7 + 10)
   // -----------------------------
   tbody.addEventListener("change", (e) => {
     const target = e.target;
@@ -248,10 +244,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const checked = target.checked;
 
-    // row highlight
+    // highlight row yellow
     row.classList.toggle("selected", checked);
 
-    // show/hide delete & edit buttons
+    // show/hide buttons on that row
     setRowActionsVisible(row, checked);
 
     // submit enable/disable + orange/gray
@@ -259,19 +255,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // -----------------------------
-  // Add new student
+  // Add new student (Requirement 5 + 6)
+  // ✅ Fill gap number + insert into correct order
   // -----------------------------
   addBtn.addEventListener("click", () => {
     try {
-      // Because we resequence on delete, next student is always N+1
-      const nextNum = tbody.querySelectorAll(".dataRow").length + 1;
-
+      const nextNum = getNextStudentNumberFillGap();
       const { main, details } = buildStudentRows(nextNum);
-      tbody.appendChild(main);
-      tbody.appendChild(details);
 
-      // Hide action cells initially for new row
+      // Hide action cells initially
       setRowActionsVisible(main, false);
+
+      // Insert in correct order visually
+      insertStudentRowsInOrder(main, details, nextNum);
 
       showPopup(`Student ${nextNum} Record added successfully`);
     } catch (err) {
@@ -279,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Submit click (not explicitly required what to do, just feedback)
+  // Submit click (extra feedback)
   submitBtn.addEventListener("click", () => {
     if (submitBtn.disabled) return;
     showPopup("Selected awards submitted successfully!");
