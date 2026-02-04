@@ -43,6 +43,49 @@
     <h3>Love something? Hate something? Let us know!</h3>
     Note : Fields marked with an asterisk(*) are mandatory
     <br><br>
+     <!-- AI Assistant Button (place ABOVE the form) -->
+<div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+  <button type="button" id="aiBtn">AI Assistant</button>
+</div>
+
+<!-- Chat Window (hidden by default) -->
+<div id="chatWindow" style="
+  display:none;
+  position:fixed;
+  right:20px;
+  top:90px;
+  width:320px;
+  height:380px;
+  background:#fff;
+  border:1px solid #333;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  padding:10px;
+  z-index:9999;
+">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <strong>AI Assistant</strong>
+    <button type="button" id="chatCloseBtn">X</button>
+  </div>
+
+  <div id="chatMessages" style="
+    margin-top:10px;
+    height:260px;
+    overflow-y:auto;
+    border:1px solid #ddd;
+    padding:8px;
+    font-size:13px;
+    background:#fafafa;
+  "></div>
+
+  <div style="display:flex; gap:6px; margin-top:10px;">
+    <input type="text" id="chatInput" placeholder="Ask a question..." style="flex:1;">
+    <button type="button" id="chatSendBtn">Send</button>
+  </div>
+
+  <div style="font-size:12px; color:#666; margin-top:6px;">
+    Try: "email", "phone", "zip", "required", "address 2"
+  </div>
+</div>
 
     <form id="feedbackForm" novalidate>
 
@@ -135,6 +178,107 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- Grab elements ---------- */
+  /* =======================
+   AI Assistant Chatbot
+   ======================= */
+
+/* =======================
+   AI Assistant Chatbot JS
+   (Paste inside DOMContentLoaded)
+   ======================= */
+
+const aiBtn = document.getElementById("aiBtn");
+const chatWindow = document.getElementById("chatWindow");
+const chatCloseBtn = document.getElementById("chatCloseBtn");
+const chatMessages = document.getElementById("chatMessages");
+const chatInput = document.getElementById("chatInput");
+const chatSendBtn = document.getElementById("chatSendBtn");
+
+function addChatBubble(text, who) {
+  const bubble = document.createElement("div");
+  bubble.style.margin = "6px 0";
+  bubble.style.padding = "6px 8px";
+  bubble.style.borderRadius = "8px";
+  bubble.style.maxWidth = "90%";
+  bubble.style.fontSize = "13px";
+  bubble.style.wordBreak = "break-word";
+
+  if (who === "user") {
+    bubble.style.marginLeft = "auto";
+    bubble.style.background = "#d9ecff";
+    bubble.textContent = "You: " + text;
+  } else {
+    bubble.style.marginRight = "auto";
+    bubble.style.background = "#e9ffe6";
+    bubble.textContent = "AI: " + text;
+  }
+
+  chatMessages.appendChild(bubble);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function getBotReply(question) {
+  const q = question.toLowerCase();
+
+  // At least 5 FAQs with keyword matching
+  if (q.includes("email")) {
+    return "You must use your Northeastern email only (example: student@northeastern.edu).";
+  }
+  if (q.includes("phone")) {
+    return "Phone number must be entered in the format (XXX) XXX-XXXX. Digits will be formatted while typing.";
+  }
+  if (q.includes("zip")) {
+    return "Zip code must be exactly 5 digits (example: 02115).";
+  }
+  if (q.includes("required") || q.includes("mandatory")) {
+    return "All fields are required except Street Address 2. Street Address 2 is optional.";
+  }
+  if (q.includes("address 2") || q.includes("street address 2") || q.includes("address2")) {
+    return "Street Address 2 is optional. If you leave it blank, it will be blank in the results table.";
+  }
+
+  return "Sorry, I don’t know that yet. Please check the instructions.";
+}
+
+function sendChat() {
+  const q = chatInput.value.trim();
+  if (!q) return;
+
+  addChatBubble(q, "user");
+  addChatBubble(getBotReply(q), "bot");
+
+  chatInput.value = "";
+  chatInput.focus();
+}
+
+// Open chat
+aiBtn.addEventListener("click", () => {
+  chatWindow.style.display = "block";
+
+  // Show a greeting only once (keeps history visible)
+  if (chatMessages.children.length === 0) {
+    addChatBubble('Hi! Ask me about "email", "phone", "zip", "required", or "address 2".', "bot");
+  }
+  chatInput.focus();
+});
+
+// Close chat
+chatCloseBtn.addEventListener("click", () => {
+  chatWindow.style.display = "none";
+});
+
+// Send button
+chatSendBtn.addEventListener("click", sendChat);
+
+// Enter key to send
+chatInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendChat();
+  }
+});
+
+
   const form = document.getElementById("feedbackForm");
   const submitBtn = document.getElementById("submitBtn");
 
