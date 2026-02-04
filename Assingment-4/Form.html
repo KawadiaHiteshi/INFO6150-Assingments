@@ -1,77 +1,140 @@
 <!doctype html>
 <html lang="en">
- <head>
+<head>
   <title>Feedback</title>
   <style>
-    label {	float: left;
-			width: 150px;}
-      #container{
-          width: 700px;
-          margin: auto;
-          background-color: beige;
-      } 
-      main{
-          padding: 50px;
-      }
+    label { float:left; width:150px; }
+    #container{ width: 780px; margin:auto; background-color: beige; }
+    main{ padding: 40px; }
+
+    .error{
+      color: red;
+      font-size: 12px;
+      margin-left: 150px;
+      display:block;
+      min-height: 16px;
+    }
+
+    #address2Counter{
+      margin-left: 150px;
+      font-size: 12px;
+    }
+
+    table{
+      margin-top: 24px;
+      width:100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    th, td{
+      border:1px solid #333;
+      padding:8px;
+      text-align:left;
+    }
+
+    .rowGap { margin-bottom: 14px; }
   </style>
- </head>
- <body>
- <div id="container">
-	 
-	 <main>
-	 <h2>Feeback</h2>
-	 <h3>Love something? Hate something? Let us know!</h3>
-		 Note : Fields marked with an asterisk(*) are mandatory
-		 <br><br>
-		 <form method="post" novalidate>
-			<label>Title*:</label>
-			<input type="radio" name="title" id="miss" value="miss" required="required"/>Miss
-			<input type="radio" name="title" id="mr" value="mr" required="required"/>Mr.
-			<input type="radio" name="title" id="mrs" value="mrs" required="required"/>Mrs.
-			<br><br>
-			<label for="firstName">First Name*:</label>
-			<input type="text" name="firstName" id="firstName" placeholder="First Name" />	
-			<br><br>
-			
+</head>
 
-			<label for="lastName">Last Name*:</label>
-			<input type="text" name="lastName" id="lastName" placeholder="Last Name" />
-			<br><br>
-			
+<body>
+<div id="container">
+  <main>
+    <h2>Feedback</h2>
+    <h3>Love something? Hate something? Let us know!</h3>
+    Note : Fields marked with an asterisk(*) are mandatory
+    <br><br>
 
-			<label for="emailId">Email Id*:</label>
-			<input type="text" name="emailId" id="emailId" placeholder="yourname@domain.com" />
-			<br><br>
-			
+    <form id="feedbackForm" novalidate>
 
-			<label for="phoneNumber">Phone Number*:</label>
-			<input type="text" name="phoneNumber" id="phoneNumber" placeholder="xxx-xxx-xxxx" />
-			<br><br>
-			
-            <label for="zipcode">ZipCode*:</label>
-			<input type="text" name="zipcode" id="zipcode" placeholder="xxxxxx" />
-			<br><br>
-             
-            <label for="zipcode">How did you hear*:</label>
-			<input type='checkbox' name="source" value="facebook" /> Facebook
-            <input type='checkbox' name="source" value="google" /> Google
-            <input type='checkbox' name="source" value="yelp" /> Yelp 
-			<br><br> 
-             
-			<label for="comments">Comments*:</label>
-			<textarea name="text" id="comments" placeholder="Your comments" rows="5" cols="25"></textarea>
-			<br><br>
-			<input type="submit" id="submitBtn" value="Submit" disabled>
-			<input type="Reset">
-			<br><br>
-		 </form>
-	 </main>
- </div>
+      <!-- Title -->
+      <div class="rowGap">
+        <label>Title*:</label>
+        <input type="radio" name="title" id="miss" value="Miss">Miss
+        <input type="radio" name="title" id="mr" value="Mr">Mr.
+        <input type="radio" name="title" id="mrs" value="Mrs">Mrs.
+        <span class="error" id="titleError"></span>
+      </div>
 
- <script>
- document.addEventListener("DOMContentLoaded", () => {
+      <!-- First Name -->
+      <div class="rowGap">
+        <label for="firstName">First Name*:</label>
+        <input type="text" id="firstName" placeholder="First Name" maxlength="20">
+        <span class="error" id="firstNameError"></span>
+      </div>
 
-  /* ---------- ELEMENTS ---------- */
+      <!-- Last Name -->
+      <div class="rowGap">
+        <label for="lastName">Last Name*:</label>
+        <input type="text" id="lastName" placeholder="Last Name" maxlength="20">
+        <span class="error" id="lastNameError"></span>
+      </div>
+
+      <!-- Email -->
+      <div class="rowGap">
+        <label for="emailId">Email Id*:</label>
+        <input type="text" id="emailId" placeholder="yourname@northeastern.edu" maxlength="40">
+        <span class="error" id="emailError"></span>
+      </div>
+
+      <!-- Phone -->
+      <div class="rowGap">
+        <label for="phoneNumber">Phone Number*:</label>
+        <input type="text" id="phoneNumber" placeholder="(XXX) XXX-XXXX" maxlength="14">
+        <span class="error" id="phoneError"></span>
+      </div>
+
+      <!-- Zip -->
+      <div class="rowGap">
+        <label for="zipcode">ZipCode*:</label>
+        <input type="text" id="zipcode" placeholder="12345" maxlength="5">
+        <span class="error" id="zipError"></span>
+      </div>
+
+      <!-- Street Address 2 (OPTIONAL) -->
+      <div class="rowGap">
+        <label for="streetAddress2">Street Address 2:</label>
+        <input type="text" id="streetAddress2" placeholder="Apt, Suite, Unit (optional)" maxlength="20">
+        <div id="address2Counter">0 / 20 characters used</div>
+        <!-- optional field → no error required -->
+      </div>
+
+      <!-- Single Select (5 elements) -->
+      <div class="rowGap">
+        <label for="sourceSelect">How did you hear*:</label>
+        <select id="sourceSelect">
+          <option value="">-- Select --</option>
+          <option value="Facebook">Facebook</option>
+          <option value="Google">Google</option>
+          <option value="Yelp">Yelp</option>
+          <option value="Friend">Friend</option>
+          <option value="Other">Other</option>
+        </select>
+        <span class="error" id="selectError"></span>
+      </div>
+
+      <!-- Dynamic checkbox + dynamic text -->
+      <div id="dynamicCheckboxContainer" class="rowGap"></div>
+      <div id="dynamicTextContainer" class="rowGap"></div>
+
+      <!-- Comments -->
+      <div class="rowGap">
+        <label for="comments">Comments*:</label>
+        <textarea id="comments" placeholder="Your comments" rows="5" cols="25" maxlength="200"></textarea>
+        <span class="error" id="commentsError"></span>
+      </div>
+
+      <input type="submit" id="submitBtn" value="Submit" disabled>
+      <input type="reset" id="resetBtn" value="Reset">
+    </form>
+
+    <div id="tableContainer"></div>
+  </main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ---------- Grab elements ---------- */
   const form = document.getElementById("feedbackForm");
   const submitBtn = document.getElementById("submitBtn");
 
@@ -80,29 +143,29 @@
   const emailId = document.getElementById("emailId");
   const phoneNumber = document.getElementById("phoneNumber");
   const zipcode = document.getElementById("zipcode");
-  const comments = document.getElementById("comments");
   const streetAddress2 = document.getElementById("streetAddress2");
   const address2Counter = document.getElementById("address2Counter");
-
   const sourceSelect = document.getElementById("sourceSelect");
-  const checkboxContainer = document.getElementById("dynamicCheckboxContainer");
-  const textContainer = document.getElementById("dynamicTextContainer");
+  const comments = document.getElementById("comments");
 
-  /* ---------- ERROR SPANS ---------- */
+  const titleError = document.getElementById("titleError");
   const firstNameError = document.getElementById("firstNameError");
   const lastNameError = document.getElementById("lastNameError");
   const emailError = document.getElementById("emailError");
   const phoneError = document.getElementById("phoneError");
   const zipError = document.getElementById("zipError");
+  const selectError = document.getElementById("selectError");
   const commentsError = document.getElementById("commentsError");
-  const titleError = document.getElementById("titleError");
 
-  /* ---------- REGEX ---------- */
-  const nameRegex = /^[a-zA-Z0-9]+$/;
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@northeastern\.edu$/;
+  const checkboxContainer = document.getElementById("dynamicCheckboxContainer");
+  const textContainer = document.getElementById("dynamicTextContainer");
+
+  /* ---------- Regex ---------- */
+  const alnumRegex = /^[a-zA-Z0-9]+$/;                   // no special chars
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@northeastern\.edu$/; // only northeastern
   const zipRegex = /^\d{5}$/;
 
-  /* ---------- VALIDATION STATE ---------- */
+  /* ---------- Validation state ---------- */
   const validState = {
     title: false,
     firstName: false,
@@ -112,198 +175,258 @@
     zip: false,
     select: false,
     comments: false,
-    dynamicText: true // only required if checkbox checked
+    dynamicText: true // only required when checkbox checked
   };
 
-  /* ---------- SUBMIT CONTROL ---------- */
-  function updateSubmitState() {
-    submitBtn.disabled = !Object.values(validState).every(v => v);
+  function updateSubmitState(){
+    submitBtn.disabled = !Object.values(validState).every(Boolean);
   }
 
-  submitBtn.disabled = true;
-  updateSubmitState();
+  function setError(span, msg){
+    span.textContent = msg;
+  }
 
-  /* ---------- TITLE ---------- */
-  document.querySelectorAll("input[name='title']").forEach(radio => {
-    radio.addEventListener("change", () => {
+  /* ---------- Title validation ---------- */
+  function validateTitle(){
+    const checked = document.querySelector("input[name='title']:checked");
+    if (!checked){
+      setError(titleError, "Please select a title.");
+      validState.title = false;
+    } else {
+      setError(titleError, "");
       validState.title = true;
-      titleError.textContent = "";
-      updateSubmitState();
-    });
+    }
+    updateSubmitState();
+  }
+
+  document.querySelectorAll("input[name='title']").forEach(r => {
+    r.addEventListener("change", validateTitle);
   });
 
-  /* ---------- FIRST NAME ---------- */
-  firstName.addEventListener("input", () => {
-    if (firstName.value.length < 2 || !nameRegex.test(firstName.value)) {
-      firstNameError.textContent = "Min 2 chars, alphanumeric only";
+  /* ---------- First Name ---------- */
+  function validateFirstName(){
+    const v = firstName.value.trim();
+    if (v.length === 0) {
+      setError(firstNameError, "First name is required.");
+      validState.firstName = false;
+    } else if (v.length < 2) {
+      setError(firstNameError, "Minimum 2 characters.");
+      validState.firstName = false;
+    } else if (v.length > 20) {
+      setError(firstNameError, "Maximum 20 characters.");
+      validState.firstName = false;
+    } else if (!alnumRegex.test(v)) {
+      setError(firstNameError, "Only alphanumeric allowed (no special characters).");
       validState.firstName = false;
     } else {
-      firstNameError.textContent = "";
+      setError(firstNameError, "");
       validState.firstName = true;
     }
     updateSubmitState();
-  });
+  }
+  firstName.addEventListener("input", validateFirstName);
 
-  /* ---------- LAST NAME ---------- */
-  lastName.addEventListener("input", () => {
-    if (lastName.value.length < 2 || !nameRegex.test(lastName.value)) {
-      lastNameError.textContent = "Min 2 chars, alphanumeric only";
+  /* ---------- Last Name ---------- */
+  function validateLastName(){
+    const v = lastName.value.trim();
+    if (v.length === 0) {
+      setError(lastNameError, "Last name is required.");
+      validState.lastName = false;
+    } else if (v.length < 2) {
+      setError(lastNameError, "Minimum 2 characters.");
+      validState.lastName = false;
+    } else if (v.length > 20) {
+      setError(lastNameError, "Maximum 20 characters.");
+      validState.lastName = false;
+    } else if (!alnumRegex.test(v)) {
+      setError(lastNameError, "Only alphanumeric allowed (no special characters).");
       validState.lastName = false;
     } else {
-      lastNameError.textContent = "";
+      setError(lastNameError, "");
       validState.lastName = true;
     }
     updateSubmitState();
-  });
+  }
+  lastName.addEventListener("input", validateLastName);
 
-  /* ---------- EMAIL ---------- */
-  emailId.addEventListener("input", () => {
-    if (!emailRegex.test(emailId.value)) {
-      emailError.textContent = "Use Northeastern email only";
+  /* ---------- Email ---------- */
+  function validateEmail(){
+    const v = emailId.value.trim();
+    if (v.length === 0) {
+      setError(emailError, "Email is required.");
+      validState.email = false;
+    } else if (!emailRegex.test(v)) {
+      setError(emailError, "Use only @northeastern.edu email.");
       validState.email = false;
     } else {
-      emailError.textContent = "";
+      setError(emailError, "");
       validState.email = true;
     }
     updateSubmitState();
-  });
+  }
+  emailId.addEventListener("input", validateEmail);
 
-  /* ---------- PHONE (MASK + VALIDATION) ---------- */
-  phoneNumber.addEventListener("input", () => {
-    let digits = phoneNumber.value.replace(/\D/g, "").substring(0, 10);
-    let formatted = digits;
+  /* ---------- Phone masking + validation ---------- */
+  function formatPhone(digits){
+    if (digits.length <= 3) return digits.length ? `(${digits}` : "";
+    if (digits.length <= 6) return `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6,10)}`;
+  }
 
-    if (digits.length > 6) {
-      formatted = `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
-    } else if (digits.length > 3) {
-      formatted = `(${digits.slice(0,3)}) ${digits.slice(3)}`;
-    }
+  function validatePhone(){
+    let digits = phoneNumber.value.replace(/\D/g, "");
+    if (digits.length > 10) digits = digits.slice(0,10);
+    phoneNumber.value = formatPhone(digits);
 
-    phoneNumber.value = formatted;
-
-    if (digits.length === 10) {
-      phoneError.textContent = "";
-      validState.phone = true;
-    } else {
-      phoneError.textContent = "Enter 10 digit phone number";
+    if (digits.length === 0) {
+      setError(phoneError, "Phone number is required.");
       validState.phone = false;
+    } else if (digits.length !== 10) {
+      setError(phoneError, "Phone must be 10 digits.");
+      validState.phone = false;
+    } else {
+      setError(phoneError, "");
+      validState.phone = true;
     }
     updateSubmitState();
-  });
+  }
+  phoneNumber.addEventListener("input", validatePhone);
 
-  /* ---------- ZIP ---------- */
-  zipcode.addEventListener("input", () => {
-    if (!zipRegex.test(zipcode.value)) {
-      zipError.textContent = "Zip must be exactly 5 digits";
+  /* ---------- Zip ---------- */
+  function validateZip(){
+    const v = zipcode.value.trim();
+    if (v.length === 0) {
+      setError(zipError, "Zip code is required.");
+      validState.zip = false;
+    } else if (!zipRegex.test(v)) {
+      setError(zipError, "Zip must be exactly 5 digits.");
       validState.zip = false;
     } else {
-      zipError.textContent = "";
+      setError(zipError, "");
       validState.zip = true;
     }
     updateSubmitState();
+  }
+  zipcode.addEventListener("input", validateZip);
+
+  /* ---------- Address2 counter (optional field) ---------- */
+  streetAddress2.addEventListener("input", () => {
+    address2Counter.textContent = `${streetAddress2.value.length} / 20 characters used`;
   });
 
-  /* ---------- COMMENTS ---------- */
-  comments.addEventListener("input", () => {
-    if (comments.value.trim().length < 5) {
-      commentsError.textContent = "Minimum 5 characters required";
-      validState.comments = false;
+  /* ---------- Select + Dynamic checkbox + Dynamic text ---------- */
+  function validateSelect(){
+    const v = sourceSelect.value;
+    if (!v) {
+      setError(selectError, "Please select an option.");
+      validState.select = false;
     } else {
-      commentsError.textContent = "";
-      validState.comments = true;
+      setError(selectError, "");
+      validState.select = true;
     }
     updateSubmitState();
-  });
+  }
 
-  /* ---------- ADDRESS 2 COUNTER ---------- */
-  streetAddress2.addEventListener("input", () => {
-    address2Counter.textContent =
-      `${streetAddress2.value.length} / 20 characters used`;
-  });
-
-  /* ---------- DROPDOWN ---------- */
-  sourceSelect.addEventListener("change", () => {
+  function renderDynamicCheckbox(){
     checkboxContainer.innerHTML = "";
     textContainer.innerHTML = "";
     validState.dynamicText = true;
 
-    if (sourceSelect.value === "") {
-      validState.select = false;
-    } else {
-      validState.select = true;
-
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.id = "dynamicCheckbox";
-
-      const label = document.createElement("label");
-      label.textContent = ` Add details for ${sourceSelect.value}`;
-
-      checkboxContainer.appendChild(checkbox);
-      checkboxContainer.appendChild(label);
-
-      checkbox.addEventListener("change", () => {
-        textContainer.innerHTML = "";
-
-        if (checkbox.checked) {
-          validState.dynamicText = false;
-
-          const input = document.createElement("input");
-          input.type = "text";
-          input.id = "dynamicText";
-
-          const error = document.createElement("div");
-          error.style.color = "red";
-
-          textContainer.appendChild(input);
-          textContainer.appendChild(error);
-
-          input.addEventListener("input", () => {
-            if (input.value.trim().length < 3) {
-              error.textContent = "This field is mandatory";
-              validState.dynamicText = false;
-            } else {
-              error.textContent = "";
-              validState.dynamicText = true;
-            }
-            updateSubmitState();
-          });
-
-        } else {
-          validState.dynamicText = true;
-        }
-
-        updateSubmitState();
-      });
+    if (!sourceSelect.value) {
+      updateSubmitState();
+      return;
     }
-    updateSubmitState();
+
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.id = "dynCb";
+
+    const lbl = document.createElement("label");
+    lbl.htmlFor = "dynCb";
+    lbl.textContent = ` Add details for ${sourceSelect.value}`;
+
+    checkboxContainer.appendChild(cb);
+    checkboxContainer.appendChild(lbl);
+
+    cb.addEventListener("change", () => {
+      textContainer.innerHTML = "";
+      if (cb.checked) {
+        validState.dynamicText = false;
+
+        const dynLabel = document.createElement("div");
+        dynLabel.style.marginLeft = "150px";
+        dynLabel.textContent = "Details*:";
+
+        const dynInput = document.createElement("input");
+        dynInput.type = "text";
+        dynInput.id = "dynText";
+        dynInput.style.marginLeft = "150px";
+
+        const dynErr = document.createElement("div");
+        dynErr.style.marginLeft = "150px";
+        dynErr.style.color = "red";
+        dynErr.style.fontSize = "12px";
+        dynErr.textContent = "This field is mandatory.";
+
+        textContainer.appendChild(dynLabel);
+        textContainer.appendChild(dynInput);
+        textContainer.appendChild(dynErr);
+
+        dynInput.addEventListener("input", () => {
+          if (dynInput.value.trim().length < 1) {
+            dynErr.textContent = "This field is mandatory.";
+            validState.dynamicText = false;
+          } else {
+            dynErr.textContent = "";
+            validState.dynamicText = true;
+          }
+          updateSubmitState();
+        });
+      } else {
+        validState.dynamicText = true;
+      }
+      updateSubmitState();
+    });
+  }
+
+  sourceSelect.addEventListener("change", () => {
+    validateSelect();
+    renderDynamicCheckbox();
   });
 
-  /* ---------- SUBMIT ---------- */
+  /* ---------- Comments ---------- */
+  function validateComments(){
+    const v = comments.value.trim();
+    if (v.length === 0) {
+      setError(commentsError, "Comments are required.");
+      validState.comments = false;
+    } else if (v.length < 5) {
+      setError(commentsError, "Minimum 5 characters.");
+      validState.comments = false;
+    } else if (v.length > 200) {
+      setError(commentsError, "Maximum 200 characters.");
+      validState.comments = false;
+    } else {
+      setError(commentsError, "");
+      validState.comments = true;
+    }
+    updateSubmitState();
+  }
+  comments.addEventListener("input", validateComments);
+
+  /* ---------- Submit: table + keep previous submissions + reset form ---------- */
   const submissions = [];
+  const tableContainer = document.getElementById("tableContainer");
 
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-
-    submissions.push({
-      title: document.querySelector("input[name='title']:checked").value,
-      firstName: firstName.value,
-      lastName: lastName.value,
-      email: emailId.value,
-      phone: phoneNumber.value,
-      zip: zipcode.value,
-      address2: streetAddress2.value,
-      source: sourceSelect.value,
-      comments: comments.value
-    });
-
-    let tableHTML = "<table><tr>" +
-      "<th>Title</th><th>First</th><th>Last</th><th>Email</th>" +
-      "<th>Phone</th><th>Zip</th><th>Address 2</th>" +
-      "<th>Source</th><th>Comments</th></tr>";
+  function renderTable(){
+    let html = `<table>
+      <tr>
+        <th>Title</th><th>First Name</th><th>Last Name</th><th>Email</th>
+        <th>Phone</th><th>Zip</th><th>Street Address 2</th><th>Heard From</th><th>Comments</th>
+      </tr>`;
 
     submissions.forEach(s => {
-      tableHTML += `<tr>
+      html += `<tr>
         <td>${s.title}</td>
         <td>${s.firstName}</td>
         <td>${s.lastName}</td>
@@ -316,18 +439,73 @@
       </tr>`;
     });
 
-    tableHTML += "</table>";
-    document.getElementById("tableContainer").innerHTML = tableHTML;
+    html += `</table>`;
+    tableContainer.innerHTML = html;
+  }
+
+  function clearErrors(){
+    [titleError, firstNameError, lastNameError, emailError, phoneError, zipError, selectError, commentsError]
+      .forEach(s => s.textContent = "");
+  }
+
+  function resetState(){
+    validState.title = false;
+    validState.firstName = false;
+    validState.lastName = false;
+    validState.email = false;
+    validState.phone = false;
+    validState.zip = false;
+    validState.select = false;
+    validState.comments = false;
+    validState.dynamicText = true;
+    updateSubmitState();
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // one last validation (still live validation required; this is just safety)
+    validateTitle(); validateFirstName(); validateLastName(); validateEmail();
+    validatePhone(); validateZip(); validateSelect(); validateComments();
+
+    if (submitBtn.disabled) return;
+
+    const titleVal = document.querySelector("input[name='title']:checked")?.value || "";
+
+    submissions.push({
+      title: titleVal,
+      firstName: firstName.value.trim(),
+      lastName: lastName.value.trim(),
+      email: emailId.value.trim(),
+      phone: phoneNumber.value.trim(),
+      zip: zipcode.value.trim(),
+      address2: streetAddress2.value.trim(), // optional (can be blank) :contentReference[oaicite:1]{index=1}
+      source: sourceSelect.value,
+      comments: comments.value.trim()
+    });
+
+    renderTable();
 
     form.reset();
-    submitBtn.disabled = true;
-
-    Object.keys(validState).forEach(k => validState[k] = false);
-    validState.dynamicText = true;
+    checkboxContainer.innerHTML = "";
+    textContainer.innerHTML = "";
+    address2Counter.textContent = "0 / 20 characters used";
+    clearErrors();
+    resetState();
   });
 
-});
- </script>
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    checkboxContainer.innerHTML = "";
+    textContainer.innerHTML = "";
+    address2Counter.textContent = "0 / 20 characters used";
+    clearErrors();
+    resetState();
+  });
 
- </body>
+  // initial state
+  resetState();
+});
+</script>
+
+</body>
 </html>
