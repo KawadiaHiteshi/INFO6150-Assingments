@@ -69,7 +69,264 @@
  </div>
 
  <script>
- 
+ document.addEventListener("DOMContentLoaded", () => {
+
+  /* ---------- ELEMENTS ---------- */
+  const form = document.getElementById("feedbackForm");
+  const submitBtn = document.getElementById("submitBtn");
+
+  const firstName = document.getElementById("firstName");
+  const lastName = document.getElementById("lastName");
+  const emailId = document.getElementById("emailId");
+  const phoneNumber = document.getElementById("phoneNumber");
+  const zipcode = document.getElementById("zipcode");
+  const comments = document.getElementById("comments");
+  const streetAddress2 = document.getElementById("streetAddress2");
+  const address2Counter = document.getElementById("address2Counter");
+
+  const sourceSelect = document.getElementById("sourceSelect");
+  const checkboxContainer = document.getElementById("dynamicCheckboxContainer");
+  const textContainer = document.getElementById("dynamicTextContainer");
+
+  /* ---------- ERROR SPANS ---------- */
+  const firstNameError = document.getElementById("firstNameError");
+  const lastNameError = document.getElementById("lastNameError");
+  const emailError = document.getElementById("emailError");
+  const phoneError = document.getElementById("phoneError");
+  const zipError = document.getElementById("zipError");
+  const commentsError = document.getElementById("commentsError");
+  const titleError = document.getElementById("titleError");
+
+  /* ---------- REGEX ---------- */
+  const nameRegex = /^[a-zA-Z0-9]+$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@northeastern\.edu$/;
+  const zipRegex = /^\d{5}$/;
+
+  /* ---------- VALIDATION STATE ---------- */
+  const validState = {
+    title: false,
+    firstName: false,
+    lastName: false,
+    email: false,
+    phone: false,
+    zip: false,
+    select: false,
+    comments: false,
+    dynamicText: true // only required if checkbox checked
+  };
+
+  /* ---------- SUBMIT CONTROL ---------- */
+  function updateSubmitState() {
+    submitBtn.disabled = !Object.values(validState).every(v => v);
+  }
+
+  submitBtn.disabled = true;
+  updateSubmitState();
+
+  /* ---------- TITLE ---------- */
+  document.querySelectorAll("input[name='title']").forEach(radio => {
+    radio.addEventListener("change", () => {
+      validState.title = true;
+      titleError.textContent = "";
+      updateSubmitState();
+    });
+  });
+
+  /* ---------- FIRST NAME ---------- */
+  firstName.addEventListener("input", () => {
+    if (firstName.value.length < 2 || !nameRegex.test(firstName.value)) {
+      firstNameError.textContent = "Min 2 chars, alphanumeric only";
+      validState.firstName = false;
+    } else {
+      firstNameError.textContent = "";
+      validState.firstName = true;
+    }
+    updateSubmitState();
+  });
+
+  /* ---------- LAST NAME ---------- */
+  lastName.addEventListener("input", () => {
+    if (lastName.value.length < 2 || !nameRegex.test(lastName.value)) {
+      lastNameError.textContent = "Min 2 chars, alphanumeric only";
+      validState.lastName = false;
+    } else {
+      lastNameError.textContent = "";
+      validState.lastName = true;
+    }
+    updateSubmitState();
+  });
+
+  /* ---------- EMAIL ---------- */
+  emailId.addEventListener("input", () => {
+    if (!emailRegex.test(emailId.value)) {
+      emailError.textContent = "Use Northeastern email only";
+      validState.email = false;
+    } else {
+      emailError.textContent = "";
+      validState.email = true;
+    }
+    updateSubmitState();
+  });
+
+  /* ---------- PHONE (MASK + VALIDATION) ---------- */
+  phoneNumber.addEventListener("input", () => {
+    let digits = phoneNumber.value.replace(/\D/g, "").substring(0, 10);
+    let formatted = digits;
+
+    if (digits.length > 6) {
+      formatted = `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
+    } else if (digits.length > 3) {
+      formatted = `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+    }
+
+    phoneNumber.value = formatted;
+
+    if (digits.length === 10) {
+      phoneError.textContent = "";
+      validState.phone = true;
+    } else {
+      phoneError.textContent = "Enter 10 digit phone number";
+      validState.phone = false;
+    }
+    updateSubmitState();
+  });
+
+  /* ---------- ZIP ---------- */
+  zipcode.addEventListener("input", () => {
+    if (!zipRegex.test(zipcode.value)) {
+      zipError.textContent = "Zip must be exactly 5 digits";
+      validState.zip = false;
+    } else {
+      zipError.textContent = "";
+      validState.zip = true;
+    }
+    updateSubmitState();
+  });
+
+  /* ---------- COMMENTS ---------- */
+  comments.addEventListener("input", () => {
+    if (comments.value.trim().length < 5) {
+      commentsError.textContent = "Minimum 5 characters required";
+      validState.comments = false;
+    } else {
+      commentsError.textContent = "";
+      validState.comments = true;
+    }
+    updateSubmitState();
+  });
+
+  /* ---------- ADDRESS 2 COUNTER ---------- */
+  streetAddress2.addEventListener("input", () => {
+    address2Counter.textContent =
+      `${streetAddress2.value.length} / 20 characters used`;
+  });
+
+  /* ---------- DROPDOWN ---------- */
+  sourceSelect.addEventListener("change", () => {
+    checkboxContainer.innerHTML = "";
+    textContainer.innerHTML = "";
+    validState.dynamicText = true;
+
+    if (sourceSelect.value === "") {
+      validState.select = false;
+    } else {
+      validState.select = true;
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = "dynamicCheckbox";
+
+      const label = document.createElement("label");
+      label.textContent = ` Add details for ${sourceSelect.value}`;
+
+      checkboxContainer.appendChild(checkbox);
+      checkboxContainer.appendChild(label);
+
+      checkbox.addEventListener("change", () => {
+        textContainer.innerHTML = "";
+
+        if (checkbox.checked) {
+          validState.dynamicText = false;
+
+          const input = document.createElement("input");
+          input.type = "text";
+          input.id = "dynamicText";
+
+          const error = document.createElement("div");
+          error.style.color = "red";
+
+          textContainer.appendChild(input);
+          textContainer.appendChild(error);
+
+          input.addEventListener("input", () => {
+            if (input.value.trim().length < 3) {
+              error.textContent = "This field is mandatory";
+              validState.dynamicText = false;
+            } else {
+              error.textContent = "";
+              validState.dynamicText = true;
+            }
+            updateSubmitState();
+          });
+
+        } else {
+          validState.dynamicText = true;
+        }
+
+        updateSubmitState();
+      });
+    }
+    updateSubmitState();
+  });
+
+  /* ---------- SUBMIT ---------- */
+  const submissions = [];
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+
+    submissions.push({
+      title: document.querySelector("input[name='title']:checked").value,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: emailId.value,
+      phone: phoneNumber.value,
+      zip: zipcode.value,
+      address2: streetAddress2.value,
+      source: sourceSelect.value,
+      comments: comments.value
+    });
+
+    let tableHTML = "<table><tr>" +
+      "<th>Title</th><th>First</th><th>Last</th><th>Email</th>" +
+      "<th>Phone</th><th>Zip</th><th>Address 2</th>" +
+      "<th>Source</th><th>Comments</th></tr>";
+
+    submissions.forEach(s => {
+      tableHTML += `<tr>
+        <td>${s.title}</td>
+        <td>${s.firstName}</td>
+        <td>${s.lastName}</td>
+        <td>${s.email}</td>
+        <td>${s.phone}</td>
+        <td>${s.zip}</td>
+        <td>${s.address2}</td>
+        <td>${s.source}</td>
+        <td>${s.comments}</td>
+      </tr>`;
+    });
+
+    tableHTML += "</table>";
+    document.getElementById("tableContainer").innerHTML = tableHTML;
+
+    form.reset();
+    submitBtn.disabled = true;
+
+    Object.keys(validState).forEach(k => validState[k] = false);
+    validState.dynamicText = true;
+  });
+
+});
  </script>
 
  </body>
