@@ -8,9 +8,9 @@
   <!-- If your stopwatch.html is inside html/ folder use ../css/... and ../js/... -->
   <link rel="stylesheet" href="../style/style.css" />
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="../js/stopwatch.js"></script>
 </head>
 <body>
+    <!-- <script src="../js/stopwatch.js"></script> -->
   <main class="wrap">
     <section class="panel">
       <header class="panel__header">
@@ -40,10 +40,11 @@
 
       <!-- Controls -->
       <div class="controls">
-        <button id="startBtn" class="btn btn--start">Start</button>
-        <button id="pauseBtn" class="btn btn--pause" disabled>Pause</button>
-        <button id="stopBtn" class="btn btn--stop" disabled>Stop & Save</button>
-        <button id="resetBtn" class="btn btn--reset">Reset</button>
+  <button id="startBtn" type="button">Start</button>
+<button id="pauseBtn" type="button">Pause</button>
+<button id="stopBtn" type="button">Stop & Save</button>
+<button id="resetBtn" type="button">Reset</button>
+
       </div>
 
       <!-- Stats -->
@@ -65,6 +66,7 @@
           <label for="filterDate" class="filterLabel">Filter by date</label>
           <input type="date" id="filterDate" />
           <button id="clearFilterBtn" class="btn btn--ghost">Clear</button>
+          <button id="clearAllBtn" class="btn btn--ghost">Clear All</button>
         </div>
       </div>
 
