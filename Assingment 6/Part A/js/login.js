@@ -5,7 +5,7 @@ $(document).ready(function () {
   const users = [
     { email: "demo@northeastern.edu", password: "Password123" },
     { email: "student@northeastern.edu", password: "Test12345" },
-    { email: "hk@northeastern.edu", password: "Northeastern8" }
+    { email: "kawadia.h@northeastern.edu", password: "Northeastern8" }
   ];
 
   const $email = $("#email");
