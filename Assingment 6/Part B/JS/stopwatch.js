@@ -1,12 +1,28 @@
+/* Part B - stopwatch.js (FINAL)
+   Meets requirements:
+   - jQuery validations (focus clear, start-blocking)
+   - Async/Await + Promises for saving
+   - setInterval / clearInterval timer
+   - localStorage session history (most recent first)
+   - filter by date + stats (total sessions + total time)
+   - disables date + event name while running
+   - no alert() popups
+   - prevents double-save (lock + disable + .off().on())
+*/
+
 $(document).ready(function () {
   const STORAGE_KEY = "a6_sessions";
 
+  // --- Timer state ---
   let totalSeconds = 0;
   let intervalId = null;
   let isRunning = false;
   let isPaused = false;
+  let isSaving = false; // prevents double save
 
+  // --- Cache DOM ---
   const $time = $("#timeDisplay");
+
   const $date = $("#eventDate");
   const $name = $("#eventName");
 
@@ -21,6 +37,8 @@ $(document).ready(function () {
   const $history = $("#history");
   const $filterDate = $("#filterDate");
   const $clearFilter = $("#clearFilterBtn");
+  const $clearAll = $("#clearAllBtn");
+
 
   const $totalSessions = $("#totalSessions");
   const $totalTime = $("#totalTime");
@@ -30,6 +48,7 @@ $(document).ready(function () {
   const $modalBody = $("#modalBody");
   const $modalClose = $("#modalClose");
 
+  // --- Helpers ---
   const todayISO = () => new Date().toISOString().slice(0, 10);
 
   const formatTime = (sec) => {
@@ -40,9 +59,11 @@ $(document).ready(function () {
   };
 
   const parseHHMMSS = (hhmmss) => {
-    const [h, m, s] = hhmmss.split(":").map(Number);
-    return (h * 3600) + (m * 60) + s;
+    const [h, m, s] = hhmmss.split(":").map((x) => Number(x) || 0);
+    return h * 3600 + m * 60 + s;
   };
+
+  const updateDisplay = () => $time.text(formatTime(totalSeconds));
 
   const showToast = (msg) => {
     $toast.stop(true, true).text(msg).addClass("toast--show");
@@ -58,18 +79,21 @@ $(document).ready(function () {
     $modalBack.removeClass("modalBack--show").attr("aria-hidden", "true");
   };
 
-  $modalClose.on("click", closeModal);
-  $modalBack.on("click", function (e) {
-    if (e.target === this) closeModal();
-  });
-
   const setInputsDisabled = (disabled) => {
     $date.prop("disabled", disabled);
     $name.prop("disabled", disabled);
   };
 
-  const updateDisplay = () => {
-    $time.text(formatTime(totalSeconds));
+  const startInterval = () => {
+    intervalId = setInterval(() => {
+      totalSeconds++;
+      updateDisplay();
+    }, 1000);
+  };
+
+  const stopInterval = () => {
+    if (intervalId) clearInterval(intervalId);
+    intervalId = null;
   };
 
   // --- Validation (jQuery) ---
@@ -89,6 +113,7 @@ $(document).ready(function () {
     return true;
   };
 
+  // Allowed: letters, numbers, spaces, hyphens, apostrophes
   const nameRegex = /^[a-zA-Z0-9\s'-]+$/;
 
   const validateName = (show = true) => {
@@ -131,25 +156,27 @@ $(document).ready(function () {
   };
 
   // Clear errors on focus (required)
-  $date.on("focus", function () { $dateErr.text("").hide(); $date.removeClass("inputErr"); });
-  $name.on("focus", function () { $nameErr.text("").hide(); $name.removeClass("inputErr"); });
-
-  // --- Timer using setInterval/clearInterval ---
-  const startInterval = () => {
-    intervalId = setInterval(() => {
-      totalSeconds++;
-      updateDisplay();
-    }, 1000);
-  };
-
-  const stopInterval = () => {
-    if (intervalId) clearInterval(intervalId);
-    intervalId = null;
-  };
+  $date.on("focus", function () {
+    $dateErr.text("").hide();
+    $date.removeClass("inputErr");
+  });
+  $name.on("focus", function () {
+    $nameErr.text("").hide();
+    $name.removeClass("inputErr");
+  });
 
   // --- Storage ---
-  const loadSessions = () => JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  const saveSessions = (sessions) => localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  const loadSessions = () => {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch {
+      return [];
+    }
+  };
+
+  const saveSessions = (sessions) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  };
 
   // Async/Await + Promise requirement
   const saveSessionAsync = async (sessionObj) => {
@@ -159,37 +186,45 @@ $(document).ready(function () {
         sessions.unshift(sessionObj); // most recent first
         saveSessions(sessions);
         resolve(sessions);
-      }, 400);
+      }, 350);
     });
   };
 
+  // --- Render ---
   const renderStats = (sessions) => {
     $totalSessions.text(sessions.length);
     const total = sessions.reduce((acc, s) => acc + parseHHMMSS(s.duration), 0);
     $totalTime.text(formatTime(total));
   };
 
-  const buildItem = (s) => `
-    <div class="item">
-      <div class="itemTop">
-        <div class="badge">${s.date}</div>
-        <div class="dur">${s.duration}</div>
+  const escapeHtml = (str) => $("<div>").text(str).html();
+
+const buildItem = (s) => `
+  <div class="item" data-id="${escapeHtml(s.id || "")}">
+    <div class="itemTop">
+      <div class="badge">${escapeHtml(s.date)}</div>
+
+      <div class="itemTopRight">
+        <div class="dur">${escapeHtml(s.duration)}</div>
+        <button type="button" class="delBtn" data-del="${escapeHtml(s.id)}">🗑</button>
       </div>
-      <div class="name">${$("<div>").text(s.eventName).html()}</div>
     </div>
-  `;
+    <div class="name">${escapeHtml(s.eventName)}</div>
+  </div>
+`;
+
 
   const renderHistory = (sessions, filterDate = "") => {
     $history.empty();
 
     const filtered = filterDate
-      ? sessions.filter(s => s.date === filterDate)
+      ? sessions.filter((s) => s.date === filterDate)
       : sessions;
 
     if (filtered.length === 0) {
       $history.append(`<div class="empty">No sessions recorded yet</div>`);
     } else {
-      filtered.forEach(s => $history.append(buildItem(s)));
+      filtered.forEach((s) => $history.append(buildItem(s)));
     }
 
     renderStats(sessions);
@@ -199,17 +234,51 @@ $(document).ready(function () {
     const sessions = loadSessions();
     renderHistory(sessions, $filterDate.val());
   };
+  // Delete ONE session (event delegation)
+$history.off("click", ".delBtn").on("click", ".delBtn", function (e) {
+  e.preventDefault();
+  e.stopPropagation();
 
-  // Filter
+  const id = $(this).data("del");
+  if (!id) return;
+
+  const sessions = loadSessions();
+  const updated = sessions.filter((s) => s.id !== id);
+  saveSessions(updated);
+  renderHistory(updated, $filterDate.val());
+  showToast("Session deleted");
+});
+// Clear ALL history
+$clearAll.off("click").on("click", function (e) {
+  e.preventDefault();
+
+  // Optional confirm (recommended for safety)
+  const ok = confirm("Clear all saved sessions? This cannot be undone.");
+  if (!ok) return;
+
+  saveSessions([]);
+  renderHistory([], $filterDate.val());
+  showToast("All sessions cleared");
+});
+
+
+  // --- Filter ---
   $filterDate.on("change", refresh);
   $clearFilter.on("click", function () {
     $filterDate.val("");
     refresh();
   });
 
+  // --- Modal ---
+  $modalClose.on("click", closeModal);
+  $modalBack.on("click", function (e) {
+    if (e.target === this) closeModal();
+  });
+
   // --- Controls ---
-  $start.on("click", function () {
-    if (isRunning) return;
+  $start.off("click").on("click", function (e) {
+    e.preventDefault();
+    if (isRunning || isSaving) return;
 
     const okD = validateDate(true);
     const okN = validateName(true);
@@ -219,6 +288,7 @@ $(document).ready(function () {
     isPaused = false;
 
     setInputsDisabled(true);
+
     $start.prop("disabled", true);
     $pause.prop("disabled", false).text("Pause");
     $stop.prop("disabled", false);
@@ -227,8 +297,9 @@ $(document).ready(function () {
     showToast("Timer started");
   });
 
-  $pause.on("click", function () {
-    if (!isRunning) return;
+  $pause.off("click").on("click", function (e) {
+    e.preventDefault();
+    if (!isRunning || isSaving) return;
 
     if (!isPaused) {
       isPaused = true;
@@ -243,47 +314,63 @@ $(document).ready(function () {
     }
   });
 
-  $stop.on("click", async function () {
-    if (!isRunning) return;
+  // IMPORTANT: Prevent double-save
+  $stop.off("click").on("click", async function (e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-    stopInterval();
-    isRunning = false;
-    isPaused = false;
+    if (!isRunning || isSaving) return;
+    isSaving = true;
 
-    const sessionObj = {
-      date: $date.val(),
-      eventName: $name.val().trim(),
-      duration: formatTime(totalSeconds)
-    };
-
-    // Prevent double save
+    // disable instantly to prevent double clicks
     $stop.prop("disabled", true);
     $pause.prop("disabled", true);
 
-    const sessions = await saveSessionAsync(sessionObj);
+    try {
+      stopInterval();
+      isRunning = false;
+      isPaused = false;
 
-    setInputsDisabled(false);
-    $start.prop("disabled", false);
-    $pause.text("Pause").prop("disabled", true);
-    $stop.prop("disabled", true);
+      const sessionObj = {
+        id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+        date: $date.val(),
+        eventName: $name.val().trim(),
+        duration: formatTime(totalSeconds),
+      };
 
-    openModal(`Saved "${sessionObj.eventName}" on ${sessionObj.date} for ${sessionObj.duration}.`);
-    showToast("Session saved");
+      const sessions = await saveSessionAsync(sessionObj);
 
-    renderHistory(sessions, $filterDate.val());
+      setInputsDisabled(false);
 
-    // Optional: reset timer after saving (comment out if you want it to stay)
-    totalSeconds = 0;
-    updateDisplay();
+      $start.prop("disabled", false);
+      $pause.text("Pause").prop("disabled", true);
+      $stop.prop("disabled", true);
+
+      openModal(
+        `Saved "${sessionObj.eventName}" on ${sessionObj.date} for ${sessionObj.duration}.`
+      );
+      showToast("Session saved");
+
+      renderHistory(sessions, $filterDate.val());
+
+      // Reset timer after save (common UX; allowed)
+      totalSeconds = 0;
+      updateDisplay();
+    } finally {
+      isSaving = false;
+    }
   });
 
-  $reset.on("click", function () {
+  $reset.off("click").on("click", function (e) {
+    e.preventDefault();
+
     stopInterval();
     totalSeconds = 0;
     updateDisplay();
 
     isRunning = false;
     isPaused = false;
+    isSaving = false;
 
     setInputsDisabled(false);
 
@@ -294,7 +381,7 @@ $(document).ready(function () {
     showToast("Reset to 00:00:00");
   });
 
-  // Init
+  // --- Init ---
   $date.val(todayISO());
   $dateErr.hide();
   $nameErr.hide();
