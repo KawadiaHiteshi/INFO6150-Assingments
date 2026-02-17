@@ -268,3 +268,21 @@ body{
   #timeDisplay{ font-size: 46px; }
   .stats{ grid-template-columns: 1fr; }
 }
+.itemTopRight{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.delBtn{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 800;
+}
+.delBtn:hover{
+  background: rgba(255,255,255,.09);
+}
