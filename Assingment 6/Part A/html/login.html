@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | Assignment 6</title>
+
+  <link rel="stylesheet" href="/Users/hiteshikawadia/Documents/INFO6150-Assingments/Assingment 6/Part A/css/style.css" />
+  <script src="/Users/hiteshikawadia/Documents/INFO6150-Assingments/Assingment 6/Part A/js/login.js"></script>
+</head>
+<body>
+  <main class="page">
+    <section class="card">
+      <header class="card__header">
+        <h1 class="title">Login</h1>
+        <p class="subtitle">Use your Northeastern email to continue.</p>
+      </header>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="demo@northeastern.edu" autocomplete="username" />
+          <small class="error" id="emailErr"></small>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Minimum 8 characters" autocomplete="current-password" />
+          <small class="error" id="passErr"></small>
+        </div>
+
+        <div class="row row--between">
+          <label class="checkbox">
+            <input id="rememberMe" type="checkbox" />
+            <span>Remember Me</span>
+          </label>
+          <span class="hint">Hardcoded users only</span>
+        </div>
+
+        <button id="loginBtn" class="btn btn--primary" type="submit" disabled>Login</button>
+
+        <div class="msg msg--error" id="loginErr" aria-live="polite"></div>
+        <div class="msg msg--success" id="loginSuccess" aria-live="polite"></div>
+      </form>
+
+      <!-- <footer class="card__footer">
+        <p class="tiny">Assignment 6 • Part A</p>
+      </footer> -->
+    </section>
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>
