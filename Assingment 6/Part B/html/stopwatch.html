@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Stopwatch | Assignment 6</title>
+
+  <!-- If your stopwatch.html is inside html/ folder use ../css/... and ../js/... -->
+  <link rel="stylesheet" href="../style/style.css" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="../js/stopwatch.js"></script>
+</head>
+<body>
+  <main class="wrap">
+    <section class="panel">
+      <header class="panel__header">
+        <h1 class="h1">Event Stopwatch</h1>
+        <p class="sub">Time an activity, save it, and track history by date.</p>
+      </header>
+
+      <!-- Timer Display -->
+      <div class="timer">
+        <span id="timeDisplay">00:00:00</span>
+      </div>
+
+      <!-- Event Details -->
+      <div class="formGrid">
+        <div class="field">
+          <label for="eventDate">Date</label>
+          <input type="date" id="eventDate" />
+          <small class="error" id="dateErr"></small>
+        </div>
+
+        <div class="field">
+          <label for="eventName">Event Name</label>
+          <input type="text" id="eventName" placeholder="What are you timing?" />
+          <small class="error" id="nameErr"></small>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button id="startBtn" class="btn btn--start">Start</button>
+        <button id="pauseBtn" class="btn btn--pause" disabled>Pause</button>
+        <button id="stopBtn" class="btn btn--stop" disabled>Stop & Save</button>
+        <button id="resetBtn" class="btn btn--reset">Reset</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat__label">Total Sessions</div>
+          <div class="stat__value" id="totalSessions">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">Total Time</div>
+          <div class="stat__value" id="totalTime">00:00:00</div>
+        </div>
+      </div>
+
+      <!-- History + Filter -->
+      <div class="historyHead">
+        <h2 class="h2">Session History</h2>
+        <div class="filter">
+          <label for="filterDate" class="filterLabel">Filter by date</label>
+          <input type="date" id="filterDate" />
+          <button id="clearFilterBtn" class="btn btn--ghost">Clear</button>
+        </div>
+      </div>
+
+      <div id="history" class="history">
+        <div class="empty" id="emptyState">No sessions recorded yet</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Modal (required) -->
+  <div class="modalBack" id="modalBack" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle" class="modalTitle">Session Saved</h3>
+      <p id="modalBody" class="modalBody"></p>
+      <div class="modalActions">
+        <button id="modalClose" class="btn btn--primary">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/stopwatch.js"></script>
+</body>
+</html>
