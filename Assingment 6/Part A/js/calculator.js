@@ -103,6 +103,74 @@ $(document).ready(function () {
 
     setTimeout(() => $res.removeClass("flash"), 300);
   });
+// --- Keypad logic: types into active input (num1 or num2) ---
+let activeField = "#num1";
+const $activeLabel = $("#activeFieldLabel");
+
+const setActive = (sel) => {
+  activeField = sel;
+  const name = sel === "#num1" ? "Number 1" : "Number 2";
+  $activeLabel.text(`Active: ${name}`);
+};
+
+// Switch active field when user focuses
+$("#num1").on("focus click", () => setActive("#num1"));
+$("#num2").on("focus click", () => setActive("#num2"));
+
+// Helpers to edit value safely
+const getVal = () => $(activeField).val();
+const setVal = (v) => $(activeField).val(v).trigger("input");
+
+const toggleSign = (v) => {
+  if (!v) return "-";
+  if (v === "-") return "";
+  return v.startsWith("-") ? v.slice(1) : "-" + v;
+};
+
+const addDot = (v) => {
+  if (!v) return "0.";
+  if (v.includes(".")) return v;
+  if (v === "-") return "-0.";
+  return v + ".";
+};
+
+const backspace = (v) => v ? v.slice(0, -1) : v;
+
+// Keypad click handling
+$(".padBtn").on("click", function () {
+  const key = $(this).data("key");
+  if (!key) return;
+
+  // Clear calc message when typing
+  $("#calcErr").hide().text("");
+
+  let v = getVal();
+
+  if (key === "ac") {
+    setVal("");
+    $("#result").val("").prop("disabled", true);
+    return;
+  }
+  if (key === "back") {
+    setVal(backspace(v));
+    $("#result").val("").prop("disabled", true);
+    return;
+  }
+  if (key === "sign") {
+    setVal(toggleSign(v));
+    $("#result").val("").prop("disabled", true);
+    return;
+  }
+  if (key === "dot") {
+    setVal(addDot(v));
+    $("#result").val("").prop("disabled", true);
+    return;
+  }
+
+  // digits / 00
+  setVal(v + String(key));
+  $("#result").val("").prop("disabled", true);
+});
 
   // Logout
   $("#logoutBtn").on("click", function () {

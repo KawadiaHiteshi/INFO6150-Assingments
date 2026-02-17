@@ -11,7 +11,7 @@
 </head>
 <body>
   <main class="page">
-    <section class="card card--wide">
+    <!-- <section class="card card--wide">
       <header class="card__header row row--between row--wrap">
         <div>
           <h1 class="title" id="welcomeTitle">Welcome!</h1>
@@ -48,7 +48,85 @@
       </div>
 
       <div class="msg msg--error" id="calcErr" aria-live="polite"></div>
-    </section>
+    </section> -->
+    <section class="card card--wide calcShell">
+  <header class="card__header row row--between row--wrap">
+    <div>
+      <h1 class="title" id="welcomeTitle">Welcome!</h1>
+      <p class="subtitle">Perform basic arithmetic operations.</p>
+    </div>
+    <button id="logoutBtn" class="btn btn--ghost">Logout</button>
+  </header>
+
+  <div class="calcLayout">
+    <!-- LEFT: fields + required operation buttons -->
+    <div class="calcLeft">
+      <div class="grid grid--2">
+        <div class="field">
+          <label for="num1">Number 1</label>
+          <input id="num1" type="text" placeholder="e.g. -12.5" inputmode="decimal" />
+          <small class="error" id="num1Err"></small>
+        </div>
+
+        <div class="field">
+          <label for="num2">Number 2</label>
+          <input id="num2" type="text" placeholder="e.g. 3.14" inputmode="decimal" />
+          <small class="error" id="num2Err"></small>
+        </div>
+      </div>
+
+      <!-- REQUIRED operation buttons -->
+      <div class="ops ops--required">
+        <button class="btn btn--primary opBtn" data-op="add">Add</button>
+        <button class="btn btn--primary opBtn" data-op="subtract">Subtract</button>
+        <button class="btn btn--primary opBtn" data-op="multiply">Multiply</button>
+        <button class="btn btn--primary opBtn" data-op="divide">Divide</button>
+      </div>
+
+      <div class="field">
+        <label for="result">Result</label>
+        <input id="result" type="text" readonly disabled />
+        <small class="hint">Result is read-only</small>
+      </div>
+
+      <div class="msg msg--error" id="calcErr" aria-live="polite"></div>
+    </div>
+
+    <!-- RIGHT: calculator keypad -->
+    <aside class="calcPad" aria-label="Calculator keypad">
+      <div class="padTop">
+        <div class="padHint">Keypad inputs go into the active field</div>
+        <div class="padActive" id="activeFieldLabel">Active: Number 1</div>
+      </div>
+
+      <div class="padGrid">
+        <button class="padBtn padFn" data-key="ac">AC</button>
+        <button class="padBtn padFn" data-key="back">⌫</button>
+        <button class="padBtn padFn" data-key="sign">±</button>
+        <button class="padBtn padFn" data-key="dot">.</button>
+
+        <button class="padBtn" data-key="7">7</button>
+        <button class="padBtn" data-key="8">8</button>
+        <button class="padBtn" data-key="9">9</button>
+        <button class="padBtn padSpacer" disabled></button>
+
+        <button class="padBtn" data-key="4">4</button>
+        <button class="padBtn" data-key="5">5</button>
+        <button class="padBtn" data-key="6">6</button>
+        <button class="padBtn padSpacer" disabled></button>
+
+        <button class="padBtn" data-key="1">1</button>
+        <button class="padBtn" data-key="2">2</button>
+        <button class="padBtn" data-key="3">3</button>
+        <button class="padBtn padSpacer" disabled></button>
+
+        <button class="padBtn padZero" data-key="0">0</button>
+        <button class="padBtn" data-key="00">00</button>
+        <button class="padBtn padSpacer" disabled></button>
+      </div>
+    </aside>
+  </div>
+</section>
   </main>
 
   <script src="js/calculator.js"></script>
