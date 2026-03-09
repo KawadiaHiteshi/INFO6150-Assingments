@@ -1,0 +1,20 @@
+@use '../abstracts/variables' as *;
+
+$theme-colors: (
+  primary: $primary,
+  accent: $accent,
+  text: $text
+);
+
+@each $name, $color in $theme-colors {
+  .text-#{$name} {
+    color: $color;
+  }
+}
+
+$spacer-sizes: 1, 2, 3, 4;
+@for $i from 1 through length($spacer-sizes) {
+  .mt-#{$i} {
+    margin-top: #{$i}rem;
+  }
+}
