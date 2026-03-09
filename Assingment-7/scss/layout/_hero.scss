@@ -1,0 +1,22 @@
+.hero-grid,
+.benefits-layout,
+.cta-flex,
+.hero-actions,
+.hero-stats,
+.testimonial-row,
+.footer-flex {
+  display: flex;
+}
+
+.hero-grid,
+.benefits-layout {
+  gap: 2rem;
+  align-items: center;
+}
+
+.hero-actions,
+.hero-stats,
+.testimonial-row,
+.cta-flex {
+  gap: 1rem;
+}
