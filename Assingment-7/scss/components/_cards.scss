@@ -1,0 +1,16 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use '../abstracts/placeholders' as *;
+
+.program-card,
+.trainer-card,
+.testimonial-card,
+.pricing-card,
+.schedule-item,
+.coach-card,
+.hero-card,
+.benefit-box,
+.inner-hero-box {
+  @extend %card-base;
+  @include glass-card;
+}
