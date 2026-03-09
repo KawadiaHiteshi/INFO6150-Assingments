@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Billing page for Aura Wellness Studio memberships." />
+  <title>Aura Wellness Studio | Billing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <div class="page-glow glow-one"></div>
+  <div class="page-glow glow-two"></div>
+
+  <header class="site-header">
+    <nav class="navbar container">
+      <a href="index.html" class="logo">Aura<span>Wellness</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="membership.html">Membership</a></li>
+        <li><a href="#billingForm">Billing</a></li>
+      </ul>
+      <div class="nav-actions"><span id="userWelcome" class="user-pill"></span><button id="logoutBtn" class="btn btn-primary btn-logout" type="button">Logout</button></div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="inner-hero section">
+      <div class="container inner-hero-box reveal-up">
+        <span class="eyebrow">Secure Checkout</span>
+        <h1>Complete your membership billing</h1>
+        <p>Review your selected plan, enter payment details, and activate your studio access.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container billing-layout">
+        <article class="billing-summary glass reveal-left">
+          <span class="eyebrow">Selected Plan</span>
+          <h2 id="selectedPlanName">No plan selected</h2>
+          <p id="selectedPlanPrice" class="billing-price">Choose a plan from the membership page.</p>
+          <ul class="billing-points">
+            <li>Instant access after successful payment</li>
+            <li>Flexible renewal each month</li>
+            <li>Member-only classes and coaching perks</li>
+          </ul>
+          <a href="membership.html" class="btn btn-secondary full-width">Back to Plans</a>
+        </article>
+
+        <section class="billing-card reveal-right">
+          <form id="billingForm" class="auth-form" novalidate>
+            <div class="input-group">
+              <label for="billingName">Cardholder Name</label>
+              <input type="text" id="billingName" placeholder="Enter cardholder name" required>
+            </div>
+            <div class="input-group">
+              <label for="billingEmail">Email</label>
+              <input type="email" id="billingEmail" placeholder="Enter billing email" required>
+            </div>
+            <div class="two-column-grid">
+              <div class="input-group">
+                <label for="cardNumber">Card Number</label>
+                <input type="text" id="cardNumber" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" required>
+              </div>
+              <div class="input-group">
+                <label for="expiryDate">Expiry</label>
+                <input type="text" id="expiryDate" maxlength="5" placeholder="MM/YY" required>
+              </div>
+            </div>
+            <div class="two-column-grid">
+              <div class="input-group">
+                <label for="cvv">CVV</label>
+                <input type="password" id="cvv" inputmode="numeric" maxlength="4" placeholder="123" required>
+              </div>
+              <div class="input-group">
+                <label for="zipCode">ZIP Code</label>
+                <input type="text" id="zipCode" inputmode="numeric" maxlength="10" placeholder="02115" required>
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="billingAddress">Billing Address</label>
+              <input type="text" id="billingAddress" placeholder="Street address" required>
+            </div>
+            <p id="billingMessage" class="form-message"></p>
+            <button type="submit" class="btn btn-primary full-width">Pay & Activate Plan</button>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-flex">
+      <div>
+        <h3>Aura Wellness Studio</h3>
+        <p>Your premium space for movement, strength, and recovery.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="membership.html">Membership</a>
+        <a href="#billingForm">Billing</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
