@@ -1,0 +1,25 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
+
+.site-footer {
+  padding: 0 0 2rem;
+}
+
+.footer-flex {
+  @include glass-card;
+  @include flex-center(space-between, center);
+  gap: 1rem;
+  border-radius: 28px;
+  padding: 1.5rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  a {
+    text-decoration: none;
+    color: $text;
+  }
+}
