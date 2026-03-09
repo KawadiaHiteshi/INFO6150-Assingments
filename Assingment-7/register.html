@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Create your Aura Wellness Studio account." />
+  <title>Aura Wellness Studio | Create Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body class="auth-page">
+  <div class="page-glow glow-one"></div>
+  <div class="page-glow glow-three"></div>
+
+  <main class="auth-shell">
+    <section class="auth-panel reveal-up">
+      <div class="auth-brand">
+        <a href="login.html" class="logo">Aura<span>Wellness</span></a>
+        <span class="eyebrow">Create Account</span>
+        <h1>Join Aura Wellness Studio</h1>
+        <p>Create your account to unlock the home page, membership plans, and protected member features.</p>
+      </div>
+
+      <form id="registerForm" class="auth-form" novalidate>
+        <div class="input-group">
+          <label for="registerName">Full Name</label>
+          <input type="text" id="registerName" placeholder="Enter your full name" required>
+        </div>
+        <div class="input-group">
+          <label for="registerEmail">Email</label>
+          <input type="email" id="registerEmail" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group">
+          <label for="registerPassword">Password</label>
+          <input type="password" id="registerPassword" placeholder="Create a password" required>
+        </div>
+        <div class="input-group">
+          <label for="registerConfirmPassword">Confirm Password</label>
+          <input type="password" id="registerConfirmPassword" placeholder="Confirm your password" required>
+        </div>
+        <p id="registerMessage" class="form-message"></p>
+        <button type="submit" class="btn btn-primary full-width">Create Account</button>
+      </form>
+
+      <div class="auth-links">
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
