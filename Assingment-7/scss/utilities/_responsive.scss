@@ -1,0 +1,7 @@
+@use '../abstracts/mixins' as *;
+
+@include respond(md) {
+  .nav-links {
+    gap: 0.75rem;
+  }
+}
