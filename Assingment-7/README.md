@@ -82,13 +82,6 @@ wellness-fitness-studio/
 3. Open `index.html` in a browser.
 4. Navigate to `membership.html` using the navbar or buttons.
 
-## Submission Notes
-
-- Upload this project to a **private GitHub repository** using your Northeastern email account.
-- Zip the project folder and upload it to Canvas.
-- Paste the GitHub repository URL in Canvas remarks.
-
-
 ## Authentication Features
 
 - Account creation stores one demo user in `localStorage`
