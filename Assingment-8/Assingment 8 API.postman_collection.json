@@ -1,0 +1,150 @@
+{
+  "info": {
+    "_postman_id": "7294f010-ecb9-4bc6-85fe-379a5cd85f77",
+    "name": "Assingment 8 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53185395",
+    "_collection_link": "https://go.postman.co/collection/53185395-7294f010-ecb9-4bc6-85fe-379a5cd85f77?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "CreateUser",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"John jacob\",\n  \"email\": \"johnj@example.com\",\n  \"password\": \"John@123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5050/user/create",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5050",
+          "path": [
+            "user",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "EditUser",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"John Updated\",\n  \"email\": \"john2@example.com\",\n  \"password\": \"NewPass@1234\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5050/user/edit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5050",
+          "path": [
+            "user",
+            "edit"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetAllUser",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5050/user/getAll",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5050",
+          "path": [
+            "user",
+            "getAll"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Upload Image",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteUser",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"john2@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5050/user/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5050",
+          "path": [
+            "user",
+            "delete"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
