@@ -267,6 +267,11 @@ const loginUser = async (req, res) => {
 
     return res.status(200).json({
       message: "Login successful.",
+      user: {
+    fullName: user.fullName,
+    email: user.email,
+    imagePath: user.imagePath || null
+  }
     });
   } catch (error) {
     return res.status(500).json({
