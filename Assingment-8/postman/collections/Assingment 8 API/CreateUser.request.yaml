@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:5050/user/create
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "fullName": "John jacob",
+      "email": "johnj@example.com",
+      "password": "John@123"
+    }
+auth:
+  type: noauth
+order: 1000

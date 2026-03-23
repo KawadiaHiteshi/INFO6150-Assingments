@@ -9,9 +9,11 @@ const {
   deleteUser,
   getAllUsers,
   uploadImage,
+  loginUser,
 } = require("../controllers/userController");
 
 router.post("/create", createUser);
+router.post("/login", loginUser);
 router.put("/edit", editUser);
 router.delete("/delete", deleteUser);
 router.get("/getAll", getAllUsers);

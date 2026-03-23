@@ -1,0 +1,9 @@
+$kind: http-request
+url: http://localhost:5050/user/getAll
+method: GET
+body:
+  type: json
+  content: ""
+auth:
+  type: noauth
+order: 3000

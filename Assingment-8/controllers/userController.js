@@ -233,11 +233,53 @@ const uploadImage = async (req, res) => {
     });
   }
 };
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({
+        error: "Email and password are required.",
+      });
+    }
+
+    if (!isValidEmail(email)) {
+      return res.status(400).json({
+        error: "Invalid email format.",
+      });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found.",
+      });
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        error: "Invalid email or password.",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Login successful.",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Server error.",
+      details: error.message,
+    });
+  }
+};
 module.exports = {
   createUser,
   editUser,
   deleteUser,
   getAllUsers,
   uploadImage,
+  loginUser,
 };

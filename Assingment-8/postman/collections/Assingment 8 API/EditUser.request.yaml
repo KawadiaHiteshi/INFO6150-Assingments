@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:5050/user/edit
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+      "fullName": "John Updated",
+      "email": "john2@example.com",
+      "password": "NewPass@1234"
+    }
+auth:
+  type: noauth
+order: 2000

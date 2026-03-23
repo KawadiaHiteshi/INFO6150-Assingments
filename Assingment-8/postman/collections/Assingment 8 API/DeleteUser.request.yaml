@@ -1,0 +1,12 @@
+$kind: http-request
+url: http://localhost:5050/user/delete
+method: DELETE
+body:
+  type: json
+  content: |-
+    {
+      "email": "john2@example.com"
+    }
+auth:
+  type: noauth
+order: 5000
