@@ -8,7 +8,7 @@ A React-based job portal that connects to the Node.js backend from Assignment 8.
 
 ### Prerequisites
 - Node.js (v16+)
-- The Assignment 8 backend running on `http://localhost:5000`
+- The Assignment 8 backend running on `http://localhost:5050`
 
 ### Installation
 
@@ -125,7 +125,7 @@ assignment-9/
 
 | Variable            | Default                  | Description                  |
 |---------------------|--------------------------|------------------------------|
-| `REACT_APP_API_URL` | `http://localhost:5000`  | Base URL for the backend API |
+| `REACT_APP_API_URL` | `http://localhost:5050`  | Base URL for the backend API |
 
 ---
 
