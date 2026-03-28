@@ -1,7 +1,7 @@
-import { Card, CardMedia, CardContent, Typography, Box, Button } from "@mui/material";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { Card, CardMedia, Box } from "@mui/material";
+import BusinessIcon from "@mui/icons-material/Business";
 
-const CompanyCard = ({ imageUrl, name, website }) => {
+const CompanyCard = ({ imageUrl }) => {
   return (
     <Card
       elevation={2}
@@ -10,35 +10,29 @@ const CompanyCard = ({ imageUrl, name, website }) => {
         overflow: "hidden",
         transition: "transform 0.2s, box-shadow 0.2s",
         "&:hover": { transform: "translateY(-4px)", boxShadow: 6 },
-        display: "flex",
-        flexDirection: "column",
       }}
     >
-      {imageUrl && (
+      {imageUrl ? (
         <CardMedia
           component="img"
-          height="180"
+          height="200"
           image={imageUrl}
-          alt={name}
+          alt="Company"
           sx={{ objectFit: "cover" }}
         />
-      )}
-      <CardContent sx={{ flexGrow: 1, textAlign: "center" }}>
-        <Typography variant="subtitle1" fontWeight={700} gutterBottom>
-          {name}
-        </Typography>
-        <Button
-          variant="outlined"
-          size="small"
-          href={website}
-          target="_blank"
-          rel="noopener noreferrer"
-          endIcon={<OpenInNewIcon />}
-          fullWidth
+      ) : (
+        <Box
+          sx={{
+            height: 200,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            bgcolor: "grey.200",
+          }}
         >
-          Visit Website
-        </Button>
-      </CardContent>
+          <BusinessIcon sx={{ fontSize: 64, color: "grey.400" }} />
+        </Box>
+      )}
     </Card>
   );
 };

@@ -1,57 +1,32 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {
-  Container,
-  Typography,
-  Grid,
-  Box,
-  Divider,
-  CircularProgress,
-  Alert,
+  Container, Typography, Grid, Box,
+  Divider, CircularProgress, Alert,
 } from "@mui/material";
 import CompanyCard from "../../components/CompanyCard/CompanyCard";
 
 const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5050";
 
-// Real companies with their actual websites
-const realCompanies = [
-  { name: "Google", website: "https://www.google.com" },
-  { name: "Apple", website: "https://www.apple.com" },
-  { name: "Microsoft", website: "https://www.microsoft.com" },
-  { name: "Amazon", website: "https://www.amazon.com" },
-  { name: "Meta", website: "https://www.meta.com" },
-  { name: "Netflix", website: "https://www.netflix.com" },
-  { name: "Tesla", website: "https://www.tesla.com" },
-  { name: "Spotify", website: "https://www.spotify.com" },
-];
-
 const CompanyShowcase = () => {
-  const [backendImages, setBackendImages] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchImages = async () => {
+    const fetchCompanies = async () => {
       try {
         const res = await axios.get(`${API_BASE}/user/getAll`);
-        const usersWithImages = res.data.users.filter((u) => u.imagePath);
-        setBackendImages(usersWithImages);
+        const withImages = res.data.users.filter((u) => u.imagePath);
+        setCompanies(withImages);
       } catch (err) {
-        setError("Could not load images from backend.");
+        setError("Could not load images. Make sure the backend is running.");
       } finally {
         setLoading(false);
       }
     };
-    fetchImages();
+    fetchCompanies();
   }, []);
-
-  // Merge: assign backend images to real companies in order
-  const companies = realCompanies.map((company, index) => ({
-    ...company,
-    imageUrl: backendImages[index]
-      ? `${API_BASE}${backendImages[index].imagePath}`
-      : null,
-  }));
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
@@ -59,29 +34,34 @@ const CompanyShowcase = () => {
         Company Showcase
       </Typography>
       <Typography color="text.secondary" sx={{ mb: 2 }}>
-        Explore top companies that are actively hiring. Click to visit their websites.
+        Companies actively hiring on JobPortal.
       </Typography>
       <Divider sx={{ mb: 4 }} />
 
       {loading && (
         <Box textAlign="center" py={8}>
           <CircularProgress />
-          <Typography color="text.secondary" mt={2}>Loading companies...</Typography>
         </Box>
       )}
 
       {!loading && error && (
-        <Alert severity="warning" sx={{ mb: 3 }}>{error}</Alert>
+        <Alert severity="warning">{error}</Alert>
       )}
 
-      {!loading && (
+      {!loading && !error && companies.length === 0 && (
+        <Box textAlign="center" py={8}>
+          <Typography color="text.secondary">
+            No images uploaded yet.
+          </Typography>
+        </Box>
+      )}
+
+      {!loading && companies.length > 0 && (
         <Grid container spacing={3}>
           {companies.map((company, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <CompanyCard
-                imageUrl={company.imageUrl}
-                name={company.name}
-                website={company.website}
+                imageUrl={`${API_BASE}${company.imagePath}`}
               />
             </Grid>
           ))}

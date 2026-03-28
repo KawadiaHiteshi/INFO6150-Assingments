@@ -1,0 +1,14 @@
+$kind: http-request
+name: Employee create
+url: " http://localhost:5050/user/create"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "fullName": "Employee User",
+      "email": "employee@northeastern.edu",
+      "password": "Employee@1234",
+      "type": "employee"
+    }
+order: 3738159575351954

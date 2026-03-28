@@ -1,0 +1,12 @@
+$kind: http-request
+name: login admin
+url: http://localhost:5050/user/login
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "email": "admin@northeastern.edu",
+      "password": "Admin@1234"
+    }
+order: 4305812103822489

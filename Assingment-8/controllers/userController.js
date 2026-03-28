@@ -17,13 +17,18 @@ const isValidPassword = (password) => {
 // POST /user/create
 const createUser = async (req, res) => {
   try {
-    const { fullName, email, password } = req.body;
+    const { fullName, email, password, type } = req.body;
 
     if (!fullName || !email || !password) {
       return res.status(400).json({
-        error: "Full name, email, and password are required.",
+        error: "Full name, email, password and type are required.",
       });
     }
+    if (!["admin", "employee"].includes(type)) {
+  return res.status(400).json({
+    error: "Type must be either 'admin' or 'employee'.",
+  });
+}
 
     if (!isValidFullName(fullName)) {
       return res.status(400).json({
@@ -57,6 +62,7 @@ const createUser = async (req, res) => {
       fullName,
       email: email.toLowerCase(),
       password: hashedPassword,
+      type,
     });
 
     await newUser.save();
@@ -169,8 +175,7 @@ const deleteUser = async (req, res) => {
 // GET /user/getAll
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, { fullName: 1, email: 1, password: 1, _id: 0 });
-
+    const users = await User.find({}, { password: 0 });
     return res.status(200).json({
       users,
     });
@@ -265,14 +270,15 @@ const loginUser = async (req, res) => {
       });
     }
 
-    return res.status(200).json({
-      message: "Login successful.",
-      user: {
+return res.status(200).json({
+  message: "Login successful.",
+  user: {
     fullName: user.fullName,
     email: user.email,
-    imagePath: user.imagePath || null
+    imagePath: user.imagePath || null,
+    type: user.type,
   }
-    });
+});
   } catch (error) {
     return res.status(500).json({
       error: "Server error.",

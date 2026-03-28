@@ -1,0 +1,14 @@
+$kind: http-request
+name: Admin create
+url: http://localhost:5050/user/create
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "fullName": "Admin User",
+      "email": "admin@northeastern.edu",
+      "password": "Admin@1234",
+      "type": "admin"
+    }
+order: 3377298335211122
