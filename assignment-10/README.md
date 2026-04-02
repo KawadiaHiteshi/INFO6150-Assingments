@@ -1,6 +1,6 @@
-# Assignment 9 – React Job Portal
+# Assignment 10 – Admin & Employee Portal with Redux
 
-A React-based job portal that connects to the Node.js backend from Assignment 8. Built with **React**, **React Router v6**, **Material UI**, and **Axios**.
+An enhanced React-based job portal built on top of Assignment 9, implementing role-based access control using Redux for state management. Admins manage employees and job postings, while employees browse job listings.
 
 ---
 
@@ -11,17 +11,17 @@ A React-based job portal that connects to the Node.js backend from Assignment 8.
 - The Assignment 8 backend running on `http://localhost:5050`
 
 ### Installation
-
 ```bash
-# 1. Clone / navigate into the project folder
-cd assignment-9
+# 1. Navigate into the project folder
+cd assignment-10
 
 # 2. Install dependencies
 npm install
 
 # 3. Create your environment file
 cp .env.example .env
-# Edit .env if your backend runs on a different port
+# Edit .env with your backend URL:
+# REACT_APP_API_URL=http://localhost:5050
 
 # 4. Start the development server
 npm start
@@ -32,39 +32,45 @@ The app will open at **http://localhost:3000**.
 ---
 
 ## Folder Structure
-
 ```
-assignment-9/
+assignment-10/
 ├── public/
 │   └── index.html
 ├── src/
 │   ├── components/
 │   │   ├── CompanyCard/
-│   │   │   └── CompanyCard.js        # Card for company images
+│   │   │   └── CompanyCard.js
 │   │   ├── JobCard/
-│   │   │   └── JobCard.js            # Card for job listings
+│   │   │   └── JobCard.js
 │   │   ├── Navbar/
-│   │   │   └── Navbar.js             # Responsive top navigation bar
-│   │   └── ProtectedRoute.js         # Auth guard for protected pages
+│   │   │   └── Navbar.js          # Role-aware navbar
+│   │   └── ProtectedRoute.js
 │   ├── context/
-│   │   └── AuthContext.js            # Session state (login / logout)
+│   │   └── AuthContext.js         # Auth context using Redux
 │   ├── data/
-│   │   └── jobPosts.js               # Static job listings data
+│   │   └── jobPosts.js
 │   ├── pages/
+│   │   ├── Admin/
+│   │   │   ├── AdminEmployees.js  # Admin-only employees table
+│   │   │   └── AddJob.js          # Admin-only add job form
 │   │   ├── About/
 │   │   │   └── About.js
 │   │   ├── CompanyShowcase/
-│   │   │   └── CompanyShowcase.js    # Fetches images from backend
+│   │   │   └── CompanyShowcase.js
 │   │   ├── Contact/
 │   │   │   └── Contact.js
 │   │   ├── Home/
 │   │   │   └── Home.js
 │   │   ├── JobListings/
-│   │   │   └── JobListings.js
+│   │   │   └── JobListings.js     # Fetches jobs from API
 │   │   └── Login/
-│   │       └── Login.js              # Authenticates against Assignment 8 API
-│   ├── App.js                        # Root component + routing
-│   └── index.js                      # React entry point
+│   │       └── Login.js
+│   ├── store/
+│   │   ├── authSlice.js           # Redux auth state
+│   │   ├── jobSlice.js            # Redux jobs state
+│   │   └── store.js               # Redux store
+│   ├── App.js                     # Role-based routing
+│   └── index.js                   # Redux Provider setup
 ├── .env.example
 ├── .gitignore
 ├── package.json
@@ -75,64 +81,76 @@ assignment-9/
 
 ## Navigation
 
-| Path         | Page              | Auth Required |
-|--------------|-------------------|---------------|
-| `/`          | Home              | No            |
-| `/about`     | About             | No            |
-| `/jobs`      | Job Listings      | No            |
-| `/contact`   | Contact           | No            |
-| `/companies` | Company Showcase  | **Yes**       |
-| `/login`     | Login             | No (redirect if logged in) |
+### Admin Routes
+| Path | Page | Description |
+|------|------|-------------|
+| `/admin/employees` | Employees | Table of all users |
+| `/admin/add-job` | Add Job | Form to create job listings |
+
+### Employee Routes
+| Path | Page | Description |
+|------|------|-------------|
+| `/` | Home | Landing page |
+| `/about` | About | About page |
+| `/jobs` | Job Listings | Jobs fetched from API |
+| `/companies` | Company Showcase | Company images from backend |
+| `/contact` | Contact | Contact form |
 
 ---
 
 ## Key Functionalities
 
-### 1. Login & Session Management
-- Login page posts credentials to `POST /user/login` on the Assignment 8 backend using **Axios**.
-- On success, the user object (`fullName`, `email`, `imagePath`) is stored in `sessionStorage` and held in React context (`AuthContext`).
-- A **Logout** button in the navbar clears session storage and redirects to `/login`.
+### 1. Redux State Management
+- `authSlice` — manages login/logout, stores user in `sessionStorage`
+- `jobSlice` — manages job listings and employee data with loading/error states
+- All API data flows through Redux — no local component state for data
 
-### 2. Protected Routes
-- The **Company Showcase** page is wrapped in a `ProtectedRoute` component.
-- Unauthenticated users are redirected to `/login` automatically.
+### 2. Role-Based Routing
+- Login response includes `type` field (`admin` or `employee`)
+- `App.js` reads user type from Redux store and renders different route sets
+- Admins can ONLY access admin pages
+- Employees can ONLY access employee pages
+- Unauthenticated users are redirected to `/login`
 
-### 3. Job Listings
-- Data is sourced from the static `src/data/jobPosts.js` file (no API call required).
-- Each card shows: **Job Title**, **Required Skills** (chips), **Salary**, and **Last Updated**.
-- A live search bar filters jobs by title or skill.
-- Clicking **Apply Now** opens the external link in a new tab.
+### 3. Admin Portal
+- **Dark navbar** labeled "Admin Portal"
+- **Employees page** — fetches all users via `GET /user/getAll`, displays in a MUI table with color-coded type chips
+- **Add Job page** — form that posts to `POST /user/create/job`, updates Redux store on success
 
-### 4. Company Showcase
-- Calls `GET /user/getAll` on the backend to retrieve users who have uploaded images.
-- Images are loaded from `GET /images/<filename>` (static file serving on the backend).
-- Shows a responsive image gallery of company cards with names.
+### 4. Employee Portal
+- **Job Listings** — fetches jobs from `GET /user/jobs` API (jobs created by admin)
+- All Assignment 9 pages available (Home, About, Companies, Contact)
 
-### 5. Material UI Components Used
-- `AppBar` / `Toolbar` – navigation bar
-- `Card` / `CardContent` / `CardActions` – job and company cards
-- `Grid` – responsive layouts on all pages
-- `TextField` – login form, contact form, job search bar
-- `Chip` – skill tags on job cards
-- `Avatar` / `Menu` – logged-in user avatar with dropdown
-- `Drawer` – mobile hamburger menu
-- `Alert` – error and success messages
-- `CircularProgress` – loading spinner on Company Showcase
-
----
-
-## Environment Variables
-
-| Variable            | Default                  | Description                  |
-|---------------------|--------------------------|------------------------------|
-| `REACT_APP_API_URL` | `http://localhost:5050`  | Base URL for the backend API |
+### 5. Login & Session
+- Only `@northeastern.edu` emails are allowed
+- Session stored in `sessionStorage` — persists on refresh, clears on tab close
+- Logout clears Redux state and sessionStorage
 
 ---
 
 ## Backend API Endpoints Used
 
-| Method | Endpoint          | Purpose                              |
-|--------|-------------------|--------------------------------------|
-| POST   | `/user/login`     | Authenticate user                    |
-| GET    | `/user/getAll`    | Fetch all users (for company images) |
-| GET    | `/images/:file`   | Serve company images (static)        |
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/user/login` | Authenticate user, returns type |
+| GET | `/user/getAll` | Fetch all users (admin only) |
+| POST | `/user/create/job` | Create a new job (admin only) |
+| GET | `/user/jobs` | Fetch all jobs (employee only) |
+| GET | `/images/:file` | Serve company images |
+
+---
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `REACT_APP_API_URL` | `http://localhost:5050` | Base URL for the backend API |
+
+---
+
+## Test Credentials
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@northeastern.edu | Admin@1234 |
+| Employee | employee@northeastern.edu | Employee@1234 |
